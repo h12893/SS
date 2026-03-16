@@ -1,0 +1,1 @@
+TRUNCATE TABLE population_landing;

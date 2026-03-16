@@ -1,0 +1,1 @@
+TRUNCATE TABLE prefecture_metadata_codes;
