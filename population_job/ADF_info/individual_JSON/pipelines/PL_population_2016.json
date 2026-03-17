@@ -1,0 +1,171 @@
+{
+    "name": "PL_prefecture_metadata_codes",
+    "properties": {
+        "activities": [
+            {
+                "name": "CreateMetadataCodes",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'prefecture_metadata_codes'\n)\nBEGIN\n    DROP TABLE prefecture_metadata_codes\nEND;\n\nCREATE TABLE prefecture_metadata_codes(\n    prefecture_code INT NOT NULL PRIMARY KEY,\n    prefecture_name NVARCHAR(200) NOT NULL,\n    region_code TINYINT NOT NULL,   -- 0:「全国」, 1:「都道府県」, 2:「政令市、23区」, 3:「外国」, 4:「不詳」\n    region_type NVARCHAR(500) NULL\n);"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "InsertPrefecturerInfo",
+                "description": "region_typeが「都道府県」のコードを入力",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "InsertElseInfo",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "INSERT INTO prefecture_metadata_codes(prefecture_code, prefecture_name, region_code, region_type) VALUES\n(1,  N'北海道', 1, N'都道府県'),\n(2,  N'青森県', 1, N'都道府県'),\n(3,  N'岩手県', 1, N'都道府県'),\n(4,  N'宮城県', 1, N'都道府県'),\n(5,  N'秋田県', 1, N'都道府県'),\n(6,  N'山形県', 1, N'都道府県'),\n(7,  N'福島県', 1, N'都道府県'),\n(8,  N'茨城県', 1, N'都道府県'),\n(9,  N'栃木県', 1, N'都道府県'),\n(10, N'群馬県', 1, N'都道府県'),\n(11, N'埼玉県', 1, N'都道府県'),\n(12, N'千葉県', 1, N'都道府県'),\n(13, N'東京都', 1, N'都道府県'),\n(14, N'神奈川県', 1, N'都道府県'),\n(15, N'新潟県', 1, N'都道府県'),\n(16, N'富山県', 1, N'都道府県'),\n(17, N'石川県', 1, N'都道府県'),\n(18, N'福井県', 1, N'都道府県'),\n(19, N'山梨県', 1, N'都道府県'),\n(20, N'長野県', 1, N'都道府県'),\n(21, N'岐阜県', 1, N'都道府県'),\n(22, N'静岡県', 1, N'都道府県'),\n(23, N'愛知県', 1, N'都道府県'),\n(24, N'三重県', 1, N'都道府県'),\n(25, N'滋賀県', 1, N'都道府県'),\n(26, N'京都府', 1, N'都道府県'),\n(27, N'大阪府', 1, N'都道府県'),\n(28, N'兵庫県', 1, N'都道府県'),\n(29, N'奈良県', 1, N'都道府県'),\n(30, N'和歌山県', 1, N'都道府県'),\n(31, N'鳥取県', 1, N'都道府県'),\n(32, N'島根県', 1, N'都道府県'),\n(33, N'岡山県', 1, N'都道府県'),\n(34, N'広島県', 1, N'都道府県'),\n(35, N'山口県', 1, N'都道府県'),\n(36, N'徳島県', 1, N'都道府県'),\n(37, N'香川県', 1, N'都道府県'),\n(38, N'愛媛県', 1, N'都道府県'),\n(39, N'高知県', 1, N'都道府県'),\n(40, N'福岡県', 1, N'都道府県'),\n(41, N'佐賀県', 1, N'都道府県'),\n(42, N'長崎県', 1, N'都道府県'),\n(43, N'熊本県', 1, N'都道府県'),\n(44, N'大分県', 1, N'都道府県'),\n(45, N'宮崎県', 1, N'都道府県'),\n(46, N'鹿児島県', 1, N'都道府県'),\n(47, N'沖縄県', 1, N'都道府県');\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "InsertElseInfo",
+                "description": "region_typeが「全国」のコードを入力「外国」「不詳",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "TruncateMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "INSERT INTO prefecture_metadata_codes(prefecture_code, prefecture_name, region_code, region_type) VALUES\n(0,  N'全国', 0, N'全国'),\n(48, N'外国', 3, N'外国'),\n(49, N'不詳', 4, N'不詳')\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "InsertCityInfo",
+                "description": "region_typeが「政令市、23区」のコードを入力",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "InsertPrefecturerInfo",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "INSERT INTO prefecture_metadata_codes(prefecture_code, prefecture_name, region_code, region_type) VALUES\n(50, N'東京都区部', 2, N'政令市、23区'),\n(51, N'札幌市', 2, N'政令市、23区'),\n(52, N'仙台市', 2, N'政令市、23区'),\n(53, N'さいたま市', 2, N'政令市、23区'),\n(54, N'千葉市', 2, N'政令市、23区'),\n(55, N'横浜市', 2, N'政令市、23区'),\n(56, N'川崎市', 2, N'政令市、23区'),\n(57, N'相模原市', 2, N'政令市、23区'),\n(58, N'新潟市', 2, N'政令市、23区'),\n(59, N'静岡市', 2, N'政令市、23区'),\n(60, N'浜松市', 2, N'政令市、23区'),\n(61, N'名古屋市', 2, N'政令市、23区'),\n(62, N'京都市', 2, N'政令市、23区'),\n(63, N'大阪市', 2, N'政令市、23区'),\n(64, N'堺市', 2, N'政令市、23区'),\n(65, N'神戸市', 2, N'政令市、23区'),\n(66, N'岡山市', 2, N'政令市、23区'),\n(67, N'広島市', 2,N'政令市、23区'),\n(68, N'北九州市', 2, N'政令市、23区'),\n(69, N'福岡市', 2, N'政令市、23区'),\n(70, N'熊本市', 2, N'政令市、23区');\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "TruncateMetadataCodes",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "TRUNCATE TABLE prefecture_metadata_codes;\n\n\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-01T08:02:47Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

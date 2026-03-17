@@ -1,0 +1,471 @@
+{
+    "name": "PL_population_2023",
+    "properties": {
+        "activities": [
+            {
+                "name": "RawToLanding",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "SetDefaultYear",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings",
+                            "skipLineCount": 8
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "prefecture",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "population",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "births",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 4
+                                },
+                                "sink": {
+                                    "name": "deaths",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 5
+                                },
+                                "sink": {
+                                    "name": "infant_deaths",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 6
+                                },
+                                "sink": {
+                                    "name": "neonatal_deaths",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 7
+                                },
+                                "sink": {
+                                    "name": "population_change",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 8
+                                },
+                                "sink": {
+                                    "name": "stillbirths_total",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 9
+                                },
+                                "sink": {
+                                    "name": "stillbirths_natural",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 10
+                                },
+                                "sink": {
+                                    "name": "stillbirths_artificial",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 11
+                                },
+                                "sink": {
+                                    "name": "perinatal_deaths",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 12
+                                },
+                                "sink": {
+                                    "name": "stillbirths_22weeks",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 13
+                                },
+                                "sink": {
+                                    "name": "early_neonatal_deaths",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 14
+                                },
+                                "sink": {
+                                    "name": "marriages",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 15
+                                },
+                                "sink": {
+                                    "name": "divorces",
+                                    "type": "String",
+                                    "physicalType": "varchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_population_2023",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_population",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "SetDefaultYear",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "TruncateLanding",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "parameters": [
+                                {
+                                    "name": "targetYear",
+                                    "type": "Int32",
+                                    "value": "2023",
+                                    "direction": "Input"
+                                }
+                            ],
+                            "type": "Query",
+                            "text": "DECLARE @constraintName NVARCHAR(200);\nDECLARE @sql NVARCHAR(MAX);\n\n-- 既存の DEFAULT 制約を取得\nSELECT @constraintName = dc.name\nFROM sys.default_constraints dc\nJOIN sys.columns c \n    ON dc.parent_object_id = c.object_id \n   AND dc.parent_column_id = c.column_id\nWHERE dc.parent_object_id = OBJECT_ID('population_landing')\n  AND c.name = 'year';\n\n-- 既存の DEFAULT 制約を削除\nIF @constraintName IS NOT NULL\nBEGIN\n    SET @sql = 'ALTER TABLE population_landing DROP CONSTRAINT ' + QUOTENAME(@constraintName) + ';';\n    EXEC(@sql);\nEND\n\n-- 新しい DEFAULT 制約を追加（@targetYear を使う）\nSET @sql = '\nALTER TABLE population_landing\nADD CONSTRAINT DF_population_landing_year DEFAULT (' + CAST(@targetYear AS NVARCHAR(10)) + ') FOR year;\n';\n\nEXEC(@sql);\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "MERGE_population_curated",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "UpdatePrefectureCodeAndCleanPrefecture",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[sp_population_merge]"
+                },
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "CreateCuratedTableIfNotExists",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF NOT EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'population_curated'\n)\nBEGIN\n    CREATE TABLE population_curated (\n        prefecture_code        INT            NOT NULL,\n        year                   INT            NOT NULL,\n        population             INT            NULL,\n        births                 INT            NULL,\n        deaths                 INT            NULL,\n        infant_deaths          INT            NULL,\n        neonatal_deaths        INT            NULL,\n        population_change      INT            NULL,\n        stillbirths_total      INT            NULL,\n        stillbirths_natural    INT            NULL,\n        stillbirths_artificial INT            NULL,\n        perinatal_deaths       INT            NULL,\n        stillbirths_22weeks    INT            NULL,\n        early_neonatal_deaths  INT            NULL,\n        marriages              INT            NULL,\n        divorces               INT            NULL,\n        updated_at             DATETIME       NOT NULL \n        CONSTRAINT DF_population_curated_updated_at DEFAULT (GETDATE()),\n        CONSTRAINT PK_population_curated PRIMARY KEY (prefecture_code, year)\n);\nEND;\n\nIF COL_LENGTH('population_curated', 'prefecture_code') IS NULL\nBEGIN\n    ALTER TABLE population_curated\n    ADD prefecture_code INT NOT NULL;\nEND"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "TruncateLanding",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateLandingTable",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "TRUNCATE TABLE population_landing;"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "UpdatePrefectureCodeAndCleanPrefecture",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "RawToLanding",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "parameters": [
+                                {
+                                    "name": "targetYear",
+                                    "type": "Int32",
+                                    "value": "2016",
+                                    "direction": "Input"
+                                }
+                            ],
+                            "type": "Query",
+                            "text": "------------------------------------------------------------\n-- 1. 全角数字 → 半角数字変換テーブル\n------------------------------------------------------------\nDECLARE @tbl TABLE(z NCHAR(1), h NCHAR(1));\nINSERT INTO @tbl(z, h)\nVALUES (N'０',N'0'),(N'１',N'1'),(N'２',N'2'),(N'３',N'3'),(N'４',N'4'),\n       (N'５',N'5'),(N'６',N'6'),(N'７',N'7'),(N'８',N'8'),(N'９',N'9');\n\n------------------------------------------------------------\n-- 2. prefecture_code の設定（全国=0、外=48、不詳=49）\n------------------------------------------------------------\nUPDATE l\nSET prefecture_code =\n    CASE\n        WHEN prefecture COLLATE Japanese_CI_AS LIKE N'全%' COLLATE Japanese_CI_AS THEN 0\n        WHEN prefecture COLLATE Japanese_CI_AS LIKE N'外%' COLLATE Japanese_CI_AS THEN 48\n        WHEN prefecture COLLATE Japanese_CI_AS LIKE N'不%' COLLATE Japanese_CI_AS THEN 49\n        ELSE TRY_CAST(\n            (\n                SELECT h \n                FROM @tbl \n                WHERE z = SUBSTRING(prefecture COLLATE Japanese_CI_AS, 1, 1)\n            ) +\n            (\n                SELECT h \n                FROM @tbl \n                WHERE z = SUBSTRING(prefecture COLLATE Japanese_CI_AS, 2, 1)\n            )\n            AS INT\n        )\n    END\nFROM population_landing l;"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CreateLandingTable",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateCuratedTableIfNotExists",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'population_landing'\n)\nBEGIN\n    DROP TABLE population_landing\nEND;\n\nCREATE TABLE population_landing(\n    prefecture_code             NVARCHAR(200),\n    prefecture             NVARCHAR(200),\n    year             NVARCHAR(200),\n    population             NVARCHAR(200),\n    births             NVARCHAR(200),\n    deaths             NVARCHAR(200),\n    infant_deaths             NVARCHAR(200),\n    neonatal_deaths             NVARCHAR(200),\n    population_change             NVARCHAR(200),\n    stillbirths_total             NVARCHAR(200),\n    stillbirths_natural             NVARCHAR(200),\n    stillbirths_artificial             NVARCHAR(200),\n    perinatal_deaths             NVARCHAR(200),\n    stillbirths_22weeks             NVARCHAR(200),\n    early_neonatal_deaths             NVARCHAR(200),\n    marriages             NVARCHAR(200),\n    divorces             NVARCHAR(200),\n);\n\nIF COL_LENGTH('population_landing', 'prefecture_code') IS NULL\nBEGIN\n    ALTER TABLE population_landing\n    ADD prefecture_code INT NULL;\nEND"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "DropLanding",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "MERGE_population_curated",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "DROP TABLE population_landing;"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-01T08:02:48Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
