@@ -1,0 +1,65 @@
+{
+    "name": "encode_raw_active_job_openings_2012_2022",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureBlobStorage1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": "第4表（2012年度～2022年度）",
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "有効求人数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx",
+                "folderPath": "government-statistical/job",
+                "container": "raw-data"
+            },
+            "range": "A3:N4130"
+        },
+        "schema": [
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            }
+        ]
+    }
+}

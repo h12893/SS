@@ -1,0 +1,208 @@
+{
+    "name": "PL_active_job_openings_metadata_codes",
+    "properties": {
+        "activities": [
+            {
+                "name": "CreateMetadataCodes",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_openings_metadata_codes'\n)\nBEGIN\n    DROP TABLE active_job_openings_metadata_codes\nEND;\n\nCREATE TABLE active_job_openings_metadata_codes (\n    job_code INT NOT NULL PRIMARY KEY,\n    job_name_2012_2022 NVARCHAR(200) NOT NULL,   -- 2012~2022年と2023年~で表記が異なる（内容は同じ）なのでカラムを分ける\n    job_name_2023_ NVARCHAR(200) NOT NULL,   -- 2012~2022年と2023年~で表記が異なる（内容は同じ）なのでカラムを分ける\n    classification_code INT,\n    classification NVARCHAR(200),\n    classification_hierarchy_code INT,\n    classification_hierarchy NVARCHAR(200)\n);"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CleanJobName",
+                "description": "",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "RawToMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "-- job_name_2012_2022内の空白削除\nUPDATE active_job_openings_metadata_codes\nSET job_name_2012_2022 = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name_2012_2022))\n\n-- job_name_2023_内の空白削除\nUPDATE active_job_openings_metadata_codes\nSET job_name_2023_  = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name_2023_))\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "RawToMetadataCodes",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "CreateMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "job_code",
+                                    "type": "Int32",
+                                    "physicalType": "int"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "job_name_2012_2022",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "job_name_2023_",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 4
+                                },
+                                "sink": {
+                                    "name": "classification_code",
+                                    "type": "Int32",
+                                    "physicalType": "int"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 5
+                                },
+                                "sink": {
+                                    "name": "classification",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 6
+                                },
+                                "sink": {
+                                    "name": "classification_hierarchy_code",
+                                    "type": "Int32",
+                                    "physicalType": "int"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 7
+                                },
+                                "sink": {
+                                    "name": "classification_hierarchy",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_active_job_openings",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_active_job_openings_metadata",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-01T08:02:47Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

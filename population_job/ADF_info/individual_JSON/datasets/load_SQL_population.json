@@ -1,0 +1,79 @@
+{
+    "name": "load_SQL_population",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "prefecture",
+                "type": "varchar"
+            },
+            {
+                "name": "population",
+                "type": "varchar"
+            },
+            {
+                "name": "deaths",
+                "type": "varchar"
+            },
+            {
+                "name": "infant_deaths",
+                "type": "varchar"
+            },
+            {
+                "name": "neonatal_deaths",
+                "type": "varchar"
+            },
+            {
+                "name": "population_change",
+                "type": "varchar"
+            },
+            {
+                "name": "stillbirths_total",
+                "type": "varchar"
+            },
+            {
+                "name": "stillbirths_natural",
+                "type": "varchar"
+            },
+            {
+                "name": "stillbirths_artificial",
+                "type": "varchar"
+            },
+            {
+                "name": "perinatal_deaths",
+                "type": "varchar"
+            },
+            {
+                "name": "stillbirths_22weeks",
+                "type": "varchar"
+            },
+            {
+                "name": "early_neonatal_deaths",
+                "type": "varchar"
+            },
+            {
+                "name": "marriages",
+                "type": "varchar"
+            },
+            {
+                "name": "divorces",
+                "type": "varchar"
+            },
+            {
+                "name": "year",
+                "type": "int",
+                "precision": 10
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "population_landing"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,1 +1,7 @@
-/population_job/raw_data
+# ========== population_job関連 ==========
+# 生データ
+/population_job/raw_data/ 
+# ADFのARMテンプレート（膨大なのでGitでの管理から除外）
+/population_job/ADF_info/ARM_template/
+# ADFのリンクサービスの個別JSON（接続文字列など機密情報を含み得るGitでの管理から除外）
+/population_job/ADF_info/individual_JSON/linkedServices
