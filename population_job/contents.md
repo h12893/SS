@@ -71,6 +71,7 @@
         - 人口動態_都道府県_2022.csv
         - 人口動態_都道府県_2023.csv
         - 人口動態_都道府県_2024.csv
+    - data_source.md
 - /sql
     - /active_job_openings
         - /2012-2022
