@@ -1,174 +1,109 @@
-# このフォルダについて
+格納されているフォルダやファイルの一覧
+
+----------------------------------------------------------------------------------------------------
+
+- /ADF_info
+    - /ARM_template（git管理対象外）
+        - 20260316.zip
+        - ARMテンプレート内容一覧.md：各ARMテンプレート出力時点でのADF構成の一覧。
+    - individual_JSON
+        - /dataset
+            - encode_raw_active_job_openings_2012_2022.json
+            - encode_raw_active_job_openings_2023_2024.json
+            - encode_raw_population_2016.json
+            - encode_raw_population_2017.json
+            - encode_raw_population_2018.json
+            - encode_raw_population_2019.json
+            - encode_raw_population_2020.json
+            - encode_raw_population_2021.json
+            - encode_raw_population_2022.json
+            - encode_raw_population_2023.json
+            - encode_raw_population_2024.json
+            - load_SQL_active_job_openings_2012_2022.json
+            - load_SQL_active_job_openings_2023_2024.json
+            - load_SQL_active_job_openings_metadata.json
+            - load_SQL_population.json
+        - /linkedService（git管理対象外）
+            - AzureBlobStorage1.json
+            - Connect_dbmake2026datalake.json
+            - Connect_population_dynamics_prefecture.json
+        - /pipelines
+            - PL_active_job_openings_2012-2022.json
+            - PL_active_job_openings_2023-2024.json
+            - PL_active_job_openings_metadata_codes.json
+            - PL_population_2016.json
+            - PL_population_2017.json
+            - PL_population_2018.json
+            - PL_population_2019.json
+            - PL_population_2020.json
+            - PL_population_2021.json
+            - PL_population_2022.json
+            - PL_population_2023.json
+            - PL_population_2024.json
+            - PL_prefecture_metadata_codes.json
+        - /triggers
+    - restoration.md
+- /docs
+    - /metadata
+        - dataset_metadata.md：データテーブルの説明。
+        - column_metadata.md：各カラムの意味・型・制約などの説明。
+        - transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
+        - region_type_definition.md：コード値と名称の対応表。
+- /raw_data（git管理対象外）
+    - /job
+        - aactive_job_openings_cods.csv
+        - 就職件数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+        - 新規求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
+        - 新規求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+        - 平均求人賃金_常用フルタイム_都道府県別_中分類_2012~2024.xlsx
+        - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
+        - 有効求職者数-新規求職者_常用のみ_都道府県別_男女別_年代別2011~2024.xlsx
+        - 有効求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+        - 有効求人数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx
+        - 有効求人数-新規求人数-就職件数_一般_都道府県別_2011~2024.xlsx
+    - /population
+        - 人口動態_都道府県_2016.csv
+        - 人口動態_都道府県_2017.csv
+        - 人口動態_都道府県_2018.csv
+        - 人口動態_都道府県_2019.csv
+        - 人口動態_都道府県_2020.csv
+        - 人口動態_都道府県_2021.csv
+        - 人口動態_都道府県_2022.csv
+        - 人口動態_都道府県_2023.csv
+        - 人口動態_都道府県_2024.csv
+- /sql
+    - /active_job_openings
+        - /2012-2022
+            - create_activejobopenings_curated.sql
+            - create_activejobopenings_landing.sql
+            - create_activejobopenings_landingraw.sql
+            - merge_activejobopenings_curated.sql
+            - preprocess_activejobopenings_landingraw.sql
+            - unpivot_activejobopenings_landing.sql
+        - /2022-2024
+            - create_activejobopenings_curated.sql
+            - create_activejobopenings_landing.sql
+            - create_activejobopenings_landingraw.sql
+            - merge_activejobopenings_curated.sql
+            - preprocess_activejobopenings_landingraw.sql
+            - unpivot_activejobopenings_landing.sql
+    - /metadata_codes
+        - /job
+            - /active_job_openings
+                -clean_jobname_metadata.sql
+                -create_activejobopeningscodes_metadata.sql
+        - /prefecture
+            - create_prefecturecodes_metadata.sql
+            - insert_city_codes.sql
+            - insert_elseinfo_codes.sql
+            - insert_prefecture_codes.sql
+            - truncate_prefecturecodes_metadata.sql
+    - /population
+        - clean_prefecturecode_landing.sql
+        - create_population_curated.sql
+        - create_population_landing.sql
+        - drop_population_landing.sql
+        - merge_population_curated.sql
+        - set_default_year.sql
+        - truncate_population_landing.sql
 
-政府統計データに関連したドキュメントやメタデータを格納。
-
-# フォルダ構成
-
-## \docs
-
-ドキュメント形式で保存されるメタデータの格納先。
-
-### \metadata
-
-- dataset_metadata.md：使用したデータそのものの説明。
-
-- column_metadata.md：各カラムの意味・型・制約などの説明。
-
-- transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
-
-- region_type_definition.md：コード値と名称の対応表。
-
-## \sql
-
-SQLテーブル形式で保存されるデータの作成用のクエリの格納先。
-SQLは格納ファイルを.sqlに、ファイル名は **動詞＋対象＋用途** 形式で、全て小文字とする。
-
-### \population
-
-#### PL_population_yyyyのクエリ
-
-- create_population_curated.sql：population_curatedを作成（パイプラインの*CreateCuratedTableIfNotExists*の処理に対応）
-
-- create_population_landing.sql：population_landingを作成（パイプラインの*CreateLandingTableIfNotExists*の処理に対応）
-
-- truncate_population_landing.sql：population_landingの中身を削除（パイプラインの*TruncateLanding*の処理に対応）
-
-- set_default_year.sql：population_landingのyearのDEFAULT制約を付け替え（パイプラインの*SetDefaultYear*の処理に対応）
-
-- clean_prefecturecode_landing.sql：カラムの型変換（パイプラインの*UpdatePrefectureCodeAndCleanPrefecture*の処理に対応）
-
-- merge_population_curated.sql：population_landingのpopulation_curatedへのマージ処理（パイプラインの*sp_population_merge*の処理に対応）
-
-### \jobs
-
-### \metadata_codes
-
-#### PL_metadata_codesのクエリ
-
-- create_codes_metadata.sql：metadata_codesを作成（パイプラインの*CreateMetadataCodes*の処理に対応）
-
-- truncate_codes_metadata.sql：metadata_codesの中身を削除（パイプラインの*TruncateMetadataCodes*の処理に対応）
-
-- insert_elseinfo_codes.sql：region_typeが「全国」「外国」「不詳」のコードをmetadata_codesに挿入（パイプラインの*InsertElseInfo*の処理に対応）
-
-- insert_prefecture_codes.sql：region_typeが「都道府県」のコードをmetadata_codesに挿入（パイプラインの*InsertPrefecturerInfo*の処理に対応）
-
-- insert_city_codes.sql：region_typeが「政令市、23区」のコードをmetadata_codesに挿入（パイプラインの*InsertCityInfo*の処理に対応）
-
-## \ADF
-
-ADFをGit連携させる場合のRootフォルダ。
-
-### \dataset
-
-ADFのデータセット定義（Dataset JSON）を保存する場所。
-
-例）encode_raw_population_yyyy.jsonなど
-
-- 含まれる情報
-
-    - データのスキーマ（列名・型）
-
-    - ファイルパス（Blob Storageのパスなど）
-
-    - 接続先（linkedServiceの参照）
-
-    - フォーマット（CSV / JSON / Parquet）
-
-- 更新されるタイミング
-
-    - 新しいデータセットを作成したとき
-
-    - Raw / Landing / Curated の構造を変更したとき
-
-### \factory
-
-ADF全体のファクトリ設定（Factory JSON）を保存する場所。
-
-例）read-government-statistical.jsonなど
-
-- 含まれる情報
-
-    - ADFの名前
-
-    - リージョン
-
-    - Git連携設定
-
-    - Data Factory全体のメタ情報
-
-- 更新されるタイミング
-
-    - ADFの設定を変更したとき
-
-    - Git連携設定を変更したとき
-
-### \linkedService
-
-ADFの接続情報（Linked Service JSON）を保存する場所。
-
-例）Connect_dbmake2026datalake.jsonなど
-
-- 含まれる情報
-
-    - SQL Databaseの接続設定
-
-    - Blob Storageの接続設定
-
-    - Key Vaultの参照
-
-    - 認証方式（Managed Identityなど）
-
-- 更新されるタイミング
-
-    - 新しい接続先を追加したとき
-
-    - 接続設定を変更したとき
-
-### \pipeline
-
-ADFのパイプライン定義（Pipeline JSON）を保存する場所。
-
-例）PL_population_yyyy.jsonなど
-
-- 含まれる情報
-
-    - Script Activity（SQL実行）
-
-    - Copy Activity（Raw → Landing）
-
-    - ForEach Activity
-
-    - パイプラインパラメータ
-
-    - アクティビティ間の依存関係
-
-- 更新されるタイミング
-
-    - ADF Studioでパイプラインを編集して保存したとき
-
-    - Gitモードで新規パイプラインを作成したとき
-
-### publish_config.json
-
-Git → ADF（実行環境）へPublishする際の設定ファイル。
-
-- 含まれる情報
-
-    - Publish先のブランチ（通常adf_publish）
-
-    - ADF JSONのルートフォルダ
-
-    - Publish時の動作設定
-
-- 更新されるタイミング
-
-    - Git連携を設定したとき
-
-    - Publishブランチを変更したとき
-
-## \pipelines
-
-ADFのARMエクスポートファイルの格納先。
-
-- adf_export.json：ARMエクスポートで得られる、ADFの構成（パイプライン・データセット・リンクサービスなど）をすべて含むファイル（2026/03/01時点のスナップショットとして保存）
