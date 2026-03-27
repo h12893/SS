@@ -42,6 +42,41 @@
             - PL_population_2024.json
             - PL_prefecture_metadata_codes.json
         - /triggers
+    - /sql
+        - /active_job_openings
+            - /2012-2022
+                - create_activejobopenings_curated.sql
+                - create_activejobopenings_landing.sql
+                - create_activejobopenings_landingraw.sql
+                - merge_activejobopenings_curated.sql
+                - preprocess_activejobopenings_landingraw.sql
+                - unpivot_activejobopenings_landing.sql
+            - /2022-2024
+                - create_activejobopenings_curated.sql
+                - create_activejobopenings_landing.sql
+                - create_activejobopenings_landingraw.sql
+                - merge_activejobopenings_curated.sql
+                - preprocess_activejobopenings_landingraw.sql
+                - unpivot_activejobopenings_landing.sql
+        - /metadata_codes
+            - /job
+                - /active_job_openings
+                    -clean_jobname_metadata.sql
+                    -create_activejobopeningscodes_metadata.sql
+            - /prefecture
+                - create_prefecturecodes_metadata.sql
+                - insert_city_codes.sql
+                - insert_elseinfo_codes.sql
+                - insert_prefecture_codes.sql
+                - truncate_prefecturecodes_metadata.sql
+        - /population
+            - clean_prefecturecode_landing.sql
+            - create_population_curated.sql
+            - create_population_landing.sql
+            - drop_population_landing.sql
+            - merge_population_curated.sql
+            - set_default_year.sql
+            - truncate_population_landing.sql
     - restoration.md
 - /docs
     - /metadata
@@ -49,6 +84,9 @@
         - column_metadata.md：各カラムの意味・型・制約などの説明。
         - transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
         - region_type_definition.md：コード値と名称の対応表。
+- /PowerBI
+    - DAX_query.md
+    - connect_setting.md（git管理対象外）
 - /raw_data（git管理対象外）
     - /job
         - aactive_job_openings_cods.csv
@@ -72,39 +110,4 @@
         - 人口動態_都道府県_2023.csv
         - 人口動態_都道府県_2024.csv
     - data_source.md
-- /sql
-    - /active_job_openings
-        - /2012-2022
-            - create_activejobopenings_curated.sql
-            - create_activejobopenings_landing.sql
-            - create_activejobopenings_landingraw.sql
-            - merge_activejobopenings_curated.sql
-            - preprocess_activejobopenings_landingraw.sql
-            - unpivot_activejobopenings_landing.sql
-        - /2022-2024
-            - create_activejobopenings_curated.sql
-            - create_activejobopenings_landing.sql
-            - create_activejobopenings_landingraw.sql
-            - merge_activejobopenings_curated.sql
-            - preprocess_activejobopenings_landingraw.sql
-            - unpivot_activejobopenings_landing.sql
-    - /metadata_codes
-        - /job
-            - /active_job_openings
-                -clean_jobname_metadata.sql
-                -create_activejobopeningscodes_metadata.sql
-        - /prefecture
-            - create_prefecturecodes_metadata.sql
-            - insert_city_codes.sql
-            - insert_elseinfo_codes.sql
-            - insert_prefecture_codes.sql
-            - truncate_prefecturecodes_metadata.sql
-    - /population
-        - clean_prefecturecode_landing.sql
-        - create_population_curated.sql
-        - create_population_landing.sql
-        - drop_population_landing.sql
-        - merge_population_curated.sql
-        - set_default_year.sql
-        - truncate_population_landing.sql
 
