@@ -85,6 +85,8 @@
         - transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
         - region_type_definition.md：コード値と名称の対応表。
 - /PowerBI
+    - /dashboard
+        - population_job.pbix
     - DAX_query.md
     - connect_setting.md（git管理対象外）
 - /raw_data（git管理対象外）
