@@ -1,12 +1,21 @@
-# ========== population_job関連 ==========
+# ==================== population_job関連 ====================
+
+# ========== ADF_info ==========
 # ADFのARMテンプレート（膨大なのでGitでの管理から除外）
 /population_job/ADF_info/ARM_template/
+
 # ADFのリンクサービスの個別JSON（接続文字列など機密情報を含み得るGitでの管理から除外）
 /population_job/ADF_info/individual_JSON/linkedServices
+
+# ========== PowerBI ==========
 # PowerBIのSQL Databaseへの接続情報
 /population_job/PowerBI/connect_setting.md
 # PowerBIのpbixファイル
 /population_job/PowerBI/dashboard/
+# PowerBIの可視化内容のスナップショット
+/population_job/PowerBI/snapshot/
+
+# ========== raw_data ==========
 # 生データ
 /population_job/raw_data/ 
 

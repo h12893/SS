@@ -5,14 +5,14 @@ PowerBiでの使用クエリの整理
 
 # 基準年に対する割合算出
 
-## populstion_curated
+## population_curated
 
 ### Population_Ratio
 
 - 内容：prefecture_code別に2016年の総人口に対する各年の比を算出。
 - 形式：メジャー
 - 用途：可視化
-- 備考：まずは集計対象を「全国」or「都道府県」に限定。
+- 備考：まずは集計対象を「全国」or「都道府県」に限定。%単位に変換。
 
 ```
 Population_Ratio = 
@@ -24,7 +24,7 @@ VAR base2016 =
     )
 RETURN
 DIVIDE(
-    SUM(population_curated[population]),
+    SUM(population_curated[population])*100,
     base2016
 )
 ```
@@ -34,7 +34,7 @@ DIVIDE(
 - 内容：yyyyで指定した年度のPopulation_Ratioの値を算出。
 - 形式：メジャー
 - 用途：Population_Ratio_Category_yyyyの作成に使用
-- 備考：カラムで作成するとPopulation_Ratio_Category_yyyy作成時に**計算列の中で、同じテーブルの別の計算列を参照**する状態になり依存関係がループするので、直接可視化に使うかどうかに関わらずメジャーで作成。
+- 備考：カラムで作成するとPopulation_Ratio_Category_yyyy作成時に**計算列の中で、同じテーブルの別の計算列を参照**する状態になり依存関係がループするので、直接可視化に使うかどうかに関わらずメジャーで作成。Population_Ratioが%単位なのでPopulation_Ratio_yyyyも%単位。
 
 ```
 Population_Ratio_2024 = 
@@ -53,7 +53,7 @@ CALCULATE(
 - 内容：prefecture_code別に2016年のjob_13（「10情報処理・通信技術」の有効求人数）に対する各年の比を算出。
 - 形式：メジャー
 - 用途：可視化
-- 備考：まずは集計対象を「全国」or「都道府県」に限定。
+- 備考：まずは集計対象を「全国」or「都道府県」に限定。%単位に変換。
 
 ```
 job_13_Ratio = 
@@ -65,7 +65,7 @@ VAR base2016_13 =
     )
 RETURN
 DIVIDE(
-    SUM(active_job_openings_curated[job_13]),
+    SUM(active_job_openings_curated[job_13])*100,
     base2016_13
 )
 ```
@@ -73,15 +73,64 @@ DIVIDE(
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 
+# 複数指標間の比較指標
+
+## population_curated
+
+
+----------------------------------------------------------------------------------------------------
+
+## active_job_openings_curated
+
+### job_13_Ratio_by_Total
+
+- 内容：prefecture_code別にjob_1（「職業計」の有効求人数）に対するjob_13（「10情報処理・通信技術」の有効求人数）の比（総有効求人に対して「10情報処理・通信技術」の有効求人が占める割合）を算出。
+- 形式：メジャー
+- 用途：可視化
+- 備考：まずは集計対象を「全国」or「都道府県」に限定。%単位に変換。
+
+```
+job_13_Ratio_by_Total = 
+DIVIDE(
+    SUM(active_job_openings_curated[job_13])*100,
+    SUM(active_job_openings_curated[job_1])
+)
+```
+
+### job_13_Ratio_by_Population
+
+- 内容：prefecture_code別に人口に対するjob_13（「10情報処理・通信技術」の有効求人数）の比（一人当たりのjob_13の有効求人数）を算出。
+- 形式：メジャー
+- 用途：可視化
+- 備考：まずは集計対象を「全国」or「都道府県」に限定。分母の人口は労働世代以外や既就職者も含むのに対して、分子の有効求人数は労働世代かつ未就職者に対するものであるので、割合は非常に小さくなり、指標としては使いづらい。
+
+```
+job_13_Ratio_by_Population = 
+DIVIDE(
+    SUM(active_job_openings_curated[job_13]),
+    CALCULATE(
+        SUM(population_curated[population])
+    )
+)
+
+```
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
 # 指標によるランキング、カテゴリ分け
 
-## populstion_curated
+## population_curated
 
 ### Population_Ratio_Category_yyyy
 
+割合系の算出を%単位に変換したことで機能しなくなったので、暫定的に使用しないように変更。
+
+~~
 - 内容：各都道府県のPopulation_Ratio_yyyyの値を閾値に応じて分類したカテゴリ付与。
 - 形式：列
 - 用途：Population_Ratioの値で都道府県をカテゴリ分け
+- Population_Ratio_Category_yyyyを凡例に、prefecture_nameをスモールマルチプルに指定することで、都道府県別のグラフが表示されて線の色や凡例はPopulation_Ratio_Category_yyyyの内容で分類される。
 
 ```
 Population_Ratio_Category_2024 = 
@@ -93,14 +142,15 @@ VAR r =
 RETURN
 SWITCH(
     TRUE(),
-    r > 1, "1より大きい",
-    r > 0.975, "0.975 ~ 1",
-    r > 0.95, "0.95 ~ 0.975",
-    r > 0.925, "0.925 ~ 0.95",
-    r > 0.9, "0.9 ~ 0.925",
-    "0.9未満"
+    r > 100, "100%より大きい",
+    r > 97.5, "97.5 ~ 100%",
+    r > 95, "95 ~ 97.5%",
+    r > 92.5, "92.5 ~ 95%",
+    r > 90, "90 ~ 92.5%",
+    "90%未満"
 )
 ```
+~~
 
 ### Prefecture_Name
 
@@ -141,7 +191,25 @@ RANKX(
 )
 ```
 
+### Is_Top_Bottom_N_Population_Ratio_Rank
+
+- 内容：Population_Ratio_Rankが上位、下位N件に該当するかどうかのフラグ。
+- 形式：メジャー
+- 用途：Population_Ratio_Rankの上位、下位N件の絞り込み
+
+```
+Is_Top_Bottom_N_Population_Ratio_Rank = 
+VAR N = SELECTEDVALUE(Top_N_Selector[N], 5)
+VAR currentRank = [Population_Ratio_Rank]
+VAR isTop = currentRank <= N
+VAR isBottom = currentRank >= 48 - N + 1
+RETURN
+IF(isTop || isBottom, 1, 0)
+```
+
 ----------------------------------------------------------------------------------------------------
+
+## active_job_openings_curated
 
 ### Prefecture_Name
 
@@ -182,7 +250,30 @@ RANKX(
 )
 ```
 
+### Is_Top_Bottom_N_job_13_Ratio_Rank
+
+- 内容：job_13_Ratio_Rankが上位、下位N件に該当するかどうかのフラグ。
+- 形式：メジャー
+- 用途：job_13_Ratio_Rankの上位、下位N件の絞り込み
+
+```
+Is_Top_Bottom_N_job_13_Ratio_Rank = 
+VAR N = SELECTEDVALUE(Top_N_Selector[N], 5)
+VAR currentRank = [job_13_Ratio_Rank]
+VAR isTop = currentRank <= N
+VAR isBottom = currentRank >= 48 - N + 1
+RETURN
+IF(isTop || isBottom, 1, 0)
+```
+
+----------------------------------------------------------------------------------------------------
+
 ## Top_N_Selector
+
+- 内容：上位、下位N件を抽出する際のスライサー作成用のテーブル。
+- 形式：テーブル
+- 用途：件数指定用のスライサー
+- 備考：件数Nとして指定したい値を必要に応じて追加する。まずは1~10と15の11種で作成。
 
 ```
 Top_N_Selector = 
@@ -190,7 +281,7 @@ Top_N_Selector =
 DATATABLE(
     "N", INTEGER,
     {
-        {3}, {5}, {10}, {15}  -- Nの候補
+        {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {15}  -- Nの候補
     }
 )
 ```
@@ -206,19 +297,6 @@ DATATABLE(
 
 
 
-
-Is_Top_Bottom_N = 
-VAR N = SELECTEDVALUE(Top_N_Selector[N], 5)
-VAR currentRank =
-    CALCULATE(
-        [Population_Ratio_Rank],
-        population_curated[prefecture_code]
-            = SELECTEDVALUE(prefecture_metadata_codes[prefecture_code])
-    )
-VAR isTop = currentRank <= N
-VAR isBottom = currentRank >= 48 - N + 1
-RETURN
-IF(isTop || isBottom, 1, 0)
 
 
 
