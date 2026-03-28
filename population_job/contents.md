@@ -85,8 +85,14 @@
         - transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
         - region_type_definition.md：コード値と名称の対応表。
 - /PowerBI
-    - /dashboard
+    - /dashboard（git管理対象外）
+        - japan_p.json
         - population_job.pbix
+    - /snapshot（git管理対象外）
+        - 2024_job_13_Ratio_by_Total_map.png
+        - 2024_job_13_Ratio_map_mid.png
+        - 2024_Population_Ratio_map_100%.png
+        - 2024_Population_Ratio_map_mid.png
     - DAX_query.md
     - connect_setting.md（git管理対象外）
 - /raw_data（git管理対象外）
