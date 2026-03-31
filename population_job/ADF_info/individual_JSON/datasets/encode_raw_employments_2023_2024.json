@@ -1,0 +1,38 @@
+{
+    "name": "encode_raw_employments_2023_2024",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureBlobStorage1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": "第8表 (2023年度～)",
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "就職件数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx",
+                "folderPath": "government-statistical/job",
+                "container": "raw-data"
+            },
+            "range": "A3:E4130"
+        },
+        "schema": [
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            }
+        ]
+    }
+}
