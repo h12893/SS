@@ -1,8 +1,3 @@
--- 空白をNULLに統一
-UPDATE active_job_openings_landing_raw
-SET prefecture = NULL
-WHERE prefecture = '';
-
 -- prefecture を直近の値で埋める（SQL Server 版）
 WITH filled AS (
     SELECT r1.row_num,

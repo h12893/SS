@@ -5,11 +5,15 @@
 - /ADF_info
     - /ARM_template（git管理対象外）
         - 20260316.zip
+        - 20260330.zip
         - ARMテンプレート内容一覧.md：各ARMテンプレート出力時点でのADF構成の一覧。
     - individual_JSON
         - /dataset
             - encode_raw_active_job_openings_2012_2022.json
             - encode_raw_active_job_openings_2023_2024.json
+            - encode_raw_active_job_openings_code.json
+            - encode_raw_employments_2012_2022.json
+            - encode_raw_employments_2023_2024.json
             - encode_raw_population_2016.json
             - encode_raw_population_2017.json
             - encode_raw_population_2018.json
@@ -22,6 +26,8 @@
             - load_SQL_active_job_openings_2012_2022.json
             - load_SQL_active_job_openings_2023_2024.json
             - load_SQL_active_job_openings_metadata.json
+            - load_SQL_employments_2012_2022.json
+            - load_SQL_employments_2023_2024.json
             - load_SQL_population.json
         - /linkedService（git管理対象外）
             - AzureBlobStorage1.json
@@ -31,6 +37,8 @@
             - PL_active_job_openings_2012-2022.json
             - PL_active_job_openings_2023-2024.json
             - PL_active_job_openings_metadata_codes.json
+            - PL_employments_2012-2022.json
+            - PL_employments_2023-2024.json
             - PL_population_2016.json
             - PL_population_2017.json
             - PL_population_2018.json
@@ -45,38 +53,53 @@
     - /sql
         - /active_job_openings
             - /2012-2022
-                - create_activejobopenings_curated.sql
-                - create_activejobopenings_landing.sql
-                - create_activejobopenings_landingraw.sql
-                - merge_activejobopenings_curated.sql
-                - preprocess_activejobopenings_landingraw.sql
-                - unpivot_activejobopenings_landing.sql
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - MergeLandingToCurated.sql
+                - PreprocessLandingRaw.sql
+                - UnpivotLandingRaw.sql
             - /2022-2024
-                - create_activejobopenings_curated.sql
-                - create_activejobopenings_landing.sql
-                - create_activejobopenings_landingraw.sql
-                - merge_activejobopenings_curated.sql
-                - preprocess_activejobopenings_landingraw.sql
-                - unpivot_activejobopenings_landing.sql
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - MergeLandingToCurated.sql
+                - PreprocessLandingRaw.sql
+                - UnpivotLandingRaw.sql
+        - /employments
+            - /2012-2022
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - MergeLandingToCurated.sql
+                - PreprocessLandingRaw.sql
+                - UnpivotLandingRaw.sql
+            - /2022-2024
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - MergeLandingToCurated.sql
+                - PreprocessLandingRaw.sql
+                - UnpivotLandingRaw.sql
         - /metadata_codes
             - /job
                 - /active_job_openings
-                    -clean_jobname_metadata.sql
-                    -create_activejobopeningscodes_metadata.sql
+                    -CleanJobName.sql
+                    -CreateMetadataCodes.sql
             - /prefecture
-                - create_prefecturecodes_metadata.sql
-                - insert_city_codes.sql
-                - insert_elseinfo_codes.sql
-                - insert_prefecture_codes.sql
-                - truncate_prefecturecodes_metadata.sql
+                - CreateMetadataCodes.sql
+                - InsertCityInfo.sql
+                - InsertElseInfo.sql
+                - InsertPrefecturerInfo.sql
+                - TruncateMetadataCodes.sql
         - /population
-            - clean_prefecturecode_landing.sql
-            - create_population_curated.sql
-            - create_population_landing.sql
-            - drop_population_landing.sql
+            - CreateCuratedTableIfNotExists.sql
+            - CreateLandingTable.sql
+            - DropLanding.sql
             - merge_population_curated.sql
-            - set_default_year.sql
-            - truncate_population_landing.sql
+            - SetDefaultYear.sql
+            - TruncateLanding.sql
+            - UpdatePrefectureCodeAndCleanPrefecture.sql
     - restoration.md
 - /docs
     - /metadata
@@ -93,8 +116,8 @@
         - 2024_job_13_Ratio_map_mid.png
         - 2024_Population_Ratio_map_100%.png
         - 2024_Population_Ratio_map_mid.png
-    - DAX_query.md
     - connect_setting.md（git管理対象外）
+    - DAX_query.md
 - /raw_data（git管理対象外）
     - /job
         - aactive_job_openings_cods.csv

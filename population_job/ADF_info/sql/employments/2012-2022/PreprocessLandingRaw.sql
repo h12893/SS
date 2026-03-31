@@ -1,28 +1,23 @@
--- 空白をNULLに統一
-UPDATE active_job_openings_landing_raw
-SET prefecture = NULL
-WHERE prefecture = '';
-
 -- prefecture を直近の値で埋める（SQL Server 版）
 WITH filled AS (
     SELECT r1.row_num,
            r1.prefecture,
            (
                SELECT TOP 1 r2.prefecture
-               FROM active_job_openings_landing_raw r2
+               FROM employments_landing_raw r2
                WHERE r2.row_num <= r1.row_num
                  AND r2.prefecture IS NOT NULL
                ORDER BY r2.row_num DESC
            ) AS prefecture_filled
-    FROM active_job_openings_landing_raw r1
+    FROM employments_landing_raw r1
 )
-UPDATE active_job_openings_landing_raw
+UPDATE employments_landing_raw
 SET prefecture = filled.prefecture_filled
 FROM filled
-WHERE active_job_openings_landing_raw.row_num = filled.row_num;
+WHERE employments_landing_raw.row_num = filled.row_num;
 
 -- prefectreu_codeへの変換
-UPDATE active_job_openings_landing_raw
+UPDATE employments_landing_raw
 SET prefecture =
     CASE
         WHEN prefecture COLLATE Japanese_CI_AS LIKE N'全%' COLLATE Japanese_CI_AS THEN 0
@@ -77,21 +72,21 @@ SET prefecture =
         WHEN prefecture COLLATE Japanese_CI_AS LIKE N'不%' COLLATE Japanese_CI_AS THEN 49
         ELSE 49
     END
-FROM active_job_openings_landing_raw;
+FROM employments_landing_raw;
 
 -- job_codeへの変換
-UPDATE active_job_openings_landing_raw
+UPDATE employments_landing_raw
 SET job =
     CASE
-        WHEN job LIKE N'職業%' THEN 1
-        WHEN job LIKE N'Ａ%' THEN 2
+        WHEN job = N'職業計' THEN 1
+        WHEN job = N'Ａ管理的職業' THEN 2
 
         WHEN job LIKE N'% 01%' THEN 3
         WHEN job LIKE N'% 02%' THEN 4
         WHEN job LIKE N'% 03%' THEN 5
         WHEN job LIKE N'% 04%' THEN 6
 
-        WHEN job LIKE N'Ｂ%' THEN 7
+        WHEN job = N'Ｂ専門的・技術的職業' THEN 7
 
         WHEN job LIKE N'% 05%' THEN 8
         WHEN job LIKE N'% 06%' THEN 9
@@ -114,7 +109,7 @@ SET job =
         WHEN job LIKE N'% 23%' THEN 26
         WHEN job LIKE N'% 24%' THEN 27
 
-        WHEN job LIKE N'Ｃ%' THEN 28
+        WHEN job = N'Ｃ事務的職業' THEN 28
 
         WHEN job LIKE N'% 25%' THEN 29
         WHEN job LIKE N'% 26%' THEN 30
@@ -124,13 +119,13 @@ SET job =
         WHEN job LIKE N'% 30%' THEN 34
         WHEN job LIKE N'% 31%' THEN 35
 
-        WHEN job LIKE N'Ｄ%' THEN 36
+        WHEN job = N'Ｄ販売の職業' THEN 36
 
         WHEN job LIKE N'% 32%' THEN 37
         WHEN job LIKE N'% 33%' THEN 38
         WHEN job LIKE N'% 34%' THEN 39
 
-        WHEN job LIKE N'Ｅ%' THEN 40
+        WHEN job = N'Ｅサービスの職業' THEN 40
 
         WHEN job LIKE N'% 35%' THEN 41
         WHEN job LIKE N'% 36%' THEN 42
@@ -141,57 +136,57 @@ SET job =
         WHEN job LIKE N'% 41%' THEN 47
         WHEN job LIKE N'% 42%' THEN 48
 
-        WHEN job LIKE N'Ｆ%' THEN 49
+        WHEN job = N'Ｆ保安の職業' THEN 49
 
         WHEN job LIKE N'% 43%' THEN 50
         WHEN job LIKE N'% 44%' THEN 51
         WHEN job LIKE N'% 45%' THEN 52
 
-        WHEN job LIKE N'Ｇ%' THEN 53
+        WHEN job = N'Ｇ農林漁業の職業' THEN 53
 
         WHEN job LIKE N'% 46%' THEN 54
         WHEN job LIKE N'% 47%' THEN 55
         WHEN job LIKE N'% 48%' THEN 56
 
-        WHEN job LIKE N'Ｈ%' THEN 57
+        WHEN job = N'Ｈ生産工程の職業' THEN 57
 
         WHEN job LIKE N'% 49%' THEN 58
         WHEN job LIKE N'% 50%' THEN 59
         WHEN job LIKE N'% 51%' THEN 60
         WHEN job LIKE N'% 52%' THEN 61
-        WHEN job LIKE N'% 53%' THEN 62
-        WHEN job LIKE N'% 54%' THEN 63
-        WHEN job LIKE N'% 55%' THEN 64
-        WHEN job LIKE N'% 56%' THEN 65
-        WHEN job LIKE N'% 57%' THEN 66
-        WHEN job LIKE N'% 58%' THEN 67
-        WHEN job LIKE N'% 59%' THEN 68
+        WHEN job LIKE N'% 54%' THEN 62
+        WHEN job LIKE N'% 57%' THEN 63
+        WHEN job LIKE N'% 60%' THEN 64
+        WHEN job LIKE N'% 61%' THEN 65
+        WHEN job LIKE N'% 62%' THEN 66
+        WHEN job LIKE N'% 63%' THEN 67
+        WHEN job LIKE N'% 64%' THEN 68
 
-        WHEN job LIKE N'Ｉ%' THEN 69
+        WHEN job = N'Ｉ輸送・機械運転の職業' THEN 69
 
-        WHEN job LIKE N'% 60%' THEN 70
-        WHEN job LIKE N'% 61%' THEN 71
-        WHEN job LIKE N'% 62%' THEN 72
-        WHEN job LIKE N'% 63%' THEN 73
-        WHEN job LIKE N'% 64%' THEN 74
+        WHEN job LIKE N'% 65%' THEN 70
+        WHEN job LIKE N'% 66%' THEN 71
+        WHEN job LIKE N'% 67%' THEN 72
+        WHEN job LIKE N'% 68%' THEN 73
+        WHEN job LIKE N'% 69%' THEN 74
 
-        WHEN job LIKE N'Ｊ%' THEN 75
+        WHEN job = N'Ｊ建設・採掘の職業' THEN 75
 
-        WHEN job LIKE N'% 65%' THEN 76
-        WHEN job LIKE N'% 66%' THEN 77
-        WHEN job LIKE N'% 67%' THEN 78
-        WHEN job LIKE N'% 68%' THEN 79
-        WHEN job LIKE N'% 69%' THEN 80
+        WHEN job LIKE N'% 70%' THEN 76
+        WHEN job LIKE N'% 71%' THEN 77
+        WHEN job LIKE N'% 72%' THEN 78
+        WHEN job LIKE N'% 73%' THEN 79
+        WHEN job LIKE N'% 74%' THEN 80
 
-        WHEN job LIKE N'Ｋ%' THEN 81
+        WHEN job = N'Ｋ運搬・清掃等の職業' THEN 81
 
-        WHEN job LIKE N'% 70%' THEN 82
-        WHEN job LIKE N'% 71%' THEN 83
-        WHEN job LIKE N'% 72%' THEN 84
-        WHEN job LIKE N'% 73%' THEN 85
+        WHEN job LIKE N'% 75%' THEN 82
+        WHEN job LIKE N'% 76%' THEN 83
+        WHEN job LIKE N'% 77%' THEN 84
+        WHEN job LIKE N'% 78%' THEN 85
 
-        WHEN job LIKE N'分類不能%' THEN 86
+        WHEN job = N'分類不能の職業' THEN 86
 
         ELSE NULL
     END
-FROM active_job_openings_landing_raw;
+FROM employments_landing_raw;

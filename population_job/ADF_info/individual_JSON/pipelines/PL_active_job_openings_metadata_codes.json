@@ -189,7 +189,7 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "encode_raw_active_job_openings",
+                        "referenceName": "encode_raw_active_job_openings_code",
                         "type": "DatasetReference"
                     }
                 ],
