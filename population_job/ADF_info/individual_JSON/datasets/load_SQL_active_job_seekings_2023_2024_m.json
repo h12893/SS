@@ -1,0 +1,38 @@
+{
+    "name": "load_SQL_active_job_seekings_2023_2024_m",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "prefecture",
+                "type": "nvarchar"
+            },
+            {
+                "name": "generation",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2023",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2024",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "active_job_seekings_landing_raw_m"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

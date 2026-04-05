@@ -1,0 +1,52 @@
+IF EXISTS (
+    SELECT 1
+    FROM sys.tables
+    WHERE name = 'active_job_seekings_landing_raw_t'
+)
+BEGIN
+    DROP TABLE active_job_seekings_landing_raw_t
+END;
+
+CREATE TABLE active_job_seekings_landing_raw_t (
+    prefecture             NVARCHAR(200),
+    generation             NVARCHAR(200),
+    job             NVARCHAR(200),
+    year_2023             NVARCHAR(200),
+    year_2024             NVARCHAR(200),
+);
+
+
+IF EXISTS (
+    SELECT 1
+    FROM sys.tables
+    WHERE name = 'active_job_seekings_landing_raw_m'
+)
+BEGIN
+    DROP TABLE active_job_seekings_landing_raw_m
+END;
+
+CREATE TABLE active_job_seekings_landing_raw_m (
+    prefecture             NVARCHAR(200),
+    generation             NVARCHAR(200),
+    job             NVARCHAR(200),
+    year_2023             NVARCHAR(200),
+    year_2024             NVARCHAR(200),
+);
+
+
+IF EXISTS (
+    SELECT 1
+    FROM sys.tables
+    WHERE name = 'active_job_seekings_landing_raw_f'
+)
+BEGIN
+    DROP TABLE active_job_seekings_landing_raw_f
+END;
+
+CREATE TABLE active_job_seekings_landing_raw_f (
+    prefecture             NVARCHAR(200),
+    generation             NVARCHAR(200),
+    job             NVARCHAR(200),
+    year_2023             NVARCHAR(200),
+    year_2024             NVARCHAR(200),
+);

@@ -1,0 +1,51 @@
+{
+    "name": "encode_raw_active_job_seekings_2023_2024_u19",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureBlobStorage1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": "第5表 (2023年度～）",
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_19歳以下.xlsx",
+                "folderPath": "government-statistical/job",
+                "container": "raw-data"
+            },
+            "range": "A4:I4131"
+        },
+        "schema": [
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

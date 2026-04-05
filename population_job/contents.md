@@ -6,14 +6,40 @@
     - /ARM_template（git管理対象外）
         - 20260316.zip
         - 20260330.zip
+        - 20260405.zip
         - ARMテンプレート内容一覧.md：各ARMテンプレート出力時点でのADF構成の一覧。
     - individual_JSON
         - /dataset
             - encode_raw_active_job_openings_2012_2022.json
             - encode_raw_active_job_openings_2023_2024.json
             - encode_raw_active_job_openings_code.json
+            - encode_raw_active_job_seekings_2012_2022_20_24.json
+            - encode_raw_active_job_seekings_2012_2022_25_29.json
+            - encode_raw_active_job_seekings_2012_2022_30_34.json
+            - encode_raw_active_job_seekings_2012_2022_35_39.json
+            - encode_raw_active_job_seekings_2012_2022_40_44.json
+            - encode_raw_active_job_seekings_2012_2022_45_49.json
+            - encode_raw_active_job_seekings_2012_2022_50_54.json
+            - encode_raw_active_job_seekings_2012_2022_55_59.json
+            - encode_raw_active_job_seekings_2012_2022_60_64.json
+            - encode_raw_active_job_seekings_2012_2022_all.json
+            - encode_raw_active_job_seekings_2012_2022_o65.json
+            - encode_raw_active_job_seekings_2012_2022_u19.json
+            - encode_raw_active_job_seekings_2023_2024_20_24.json
+            - encode_raw_active_job_seekings_2023_2024_25_29.json
+            - encode_raw_active_job_seekings_2023_2024_30_34.json
+            - encode_raw_active_job_seekings_2023_2024_35_39.json
+            - encode_raw_active_job_seekings_2023_2024_40_44.json
+            - encode_raw_active_job_seekings_2023_2024_45_49.json
+            - encode_raw_active_job_seekings_2023_2024_50_54.json
+            - encode_raw_active_job_seekings_2023_2024_55_59.json
+            - encode_raw_active_job_seekings_2023_2024_60_64.json
+            - encode_raw_active_job_seekings_2023_2024_all.json
+            - encode_raw_active_job_seekings_2023_2024_o65.json
+            - encode_raw_active_job_seekings_2023_2024_u19.json
             - encode_raw_employments_2012_2022.json
             - encode_raw_employments_2023_2024.json
+            - encode_raw_generation_code.json
             - encode_raw_population_2016.json
             - encode_raw_population_2017.json
             - encode_raw_population_2018.json
@@ -23,12 +49,21 @@
             - encode_raw_population_2022.json
             - encode_raw_population_2023.json
             - encode_raw_population_2024.json
+            - encode_raw_sex_code.json
             - load_SQL_active_job_openings_2012_2022.json
             - load_SQL_active_job_openings_2023_2024.json
             - load_SQL_active_job_openings_metadata.json
+            - load_SQL_active_job_seekings_2012_2022_f.json
+            - load_SQL_active_job_seekings_2012_2022_m.json
+            - load_SQL_active_job_seekings_2012_2022_t.json
+            - load_SQL_active_job_seekings_2023_2024_f.json
+            - load_SQL_active_job_seekings_2023_2024_m.json
+            - load_SQL_active_job_seekings_2023_2024_t.json
             - load_SQL_employments_2012_2022.json
             - load_SQL_employments_2023_2024.json
+            - load_SQL_generation_metadata.json
             - load_SQL_population.json
+            - load_SQL_sex_metadata.json
         - /linkedService（git管理対象外）
             - AzureBlobStorage1.json
             - Connect_dbmake2026datalake.json
@@ -37,6 +72,31 @@
             - PL_active_job_openings_2012-2022.json
             - PL_active_job_openings_2023-2024.json
             - PL_active_job_openings_metadata_codes.json
+            - PL_active_job_seekings_2012-2022_20-24.json
+            - PL_active_job_seekings_2012-2022_25-29.json
+            - PL_active_job_seekings_2012-2022_30-34.json
+            - PL_active_job_seekings_2012-2022_35-39.json
+            - PL_active_job_seekings_2012-2022_40-44.json
+            - PL_active_job_seekings_2012-2022_45-49.json
+            - PL_active_job_seekings_2012-2022_50-54.json
+            - PL_active_job_seekings_2012-2022_55-59.json
+            - PL_active_job_seekings_2012-2022_60-64.json
+            - PL_active_job_seekings_2012-2022_all.json
+            - PL_active_job_seekings_2012-2022_o65.json
+            - PL_active_job_seekings_2012-2022_u19.json
+            - PL_active_job_seekings_2023-2024_20-24.json
+            - PL_active_job_seekings_2023-2024_25-29.json
+            - PL_active_job_seekings_2023-2024_30-34.json
+            - PL_active_job_seekings_2023-2024_35-39.json
+            - PL_active_job_seekings_2023-2024_40-44.json
+            - PL_active_job_seekings_2023-2024_45-49.json
+            - PL_active_job_seekings_2023-2024_50-54.json
+            - PL_active_job_seekings_2023-2024_55-59.json
+            - PL_active_job_seekings_2023-2024_60-64.json
+            - PL_active_job_seekings_2023-2024_all.json
+            - PL_active_job_seekings_2023-2024_o65.json
+            - PL_active_job_seekings_2023-2024_u19.json
+            - PL_demogra_metadata_codes.json
             - PL_employments_2012-2022.json
             - PL_employments_2023-2024.json
             - PL_population_2016.json
@@ -66,6 +126,23 @@
                 - MergeLandingToCurated.sql
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
+        - /active_job_seekings（パイプラインとしては年代別で12通り別々に処理を行っているが、読み込む元データが異なるだけでSQLの中身は等しいので「年齢計」のSQLのみを格納）
+            - /2012-2022
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - DropLanding.sql
+                - MergeLandingToCurated.sql
+                - UnionLanding.sql
+                - UnpivotLandingRaw.sql
+            - /2022-2024
+                - CreateCuratedTableIfNotExists.sql
+                - CreateLandingRawTable.sql
+                - CreateLandingTable.sql
+                - DropLanding.sql
+                - MergeLandingToCurated.sql
+                - UnionLanding.sql
+                - UnpivotLandingRaw.sql
         - /employments
             - /2012-2022
                 - CreateCuratedTableIfNotExists.sql
@@ -82,10 +159,11 @@
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
         - /metadata_codes
-            - /job
-                - /active_job_openings
-                    -CleanJobName.sql
-                    -CreateMetadataCodes.sql
+            - /active_job_openings_metadata_codes
+                - CleanJobName.sql
+                - CreateMetadataCodes.sql
+            - /demogra_metadata_codes
+                - CreateMetadataCodes.sql
             - /prefecture
                 - CreateMetadataCodes.sql
                 - InsertCityInfo.sql

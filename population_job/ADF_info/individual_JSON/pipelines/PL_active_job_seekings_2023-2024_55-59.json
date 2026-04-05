@@ -1,0 +1,578 @@
+{
+    "name": "PL_active_job_seekings_2023-2024_55-59",
+    "properties": {
+        "activities": [
+            {
+                "name": "RawToLandingRawT",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "CreateLandingTable",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "prefecture",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "generation",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "job",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 4
+                                },
+                                "sink": {
+                                    "name": "year_2023",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "physicalType": "String",
+                                    "ordinal": 7
+                                },
+                                "sink": {
+                                    "name": "year_2024",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_active_job_seekings_2023_2024_55_59",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_active_job_seekings_2023_2024_t",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "CreateLandingRawTable",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_raw_t'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_raw_t\nEND;\n\nCREATE TABLE active_job_seekings_landing_raw_t (\n    prefecture             NVARCHAR(200),\n    generation             NVARCHAR(200),\n    job             NVARCHAR(200),\n    year_2023             NVARCHAR(200),\n    year_2024             NVARCHAR(200),\n);\n\n\nIF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_raw_m'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_raw_m\nEND;\n\nCREATE TABLE active_job_seekings_landing_raw_m (\n    prefecture             NVARCHAR(200),\n    generation             NVARCHAR(200),\n    job             NVARCHAR(200),\n    year_2023             NVARCHAR(200),\n    year_2024             NVARCHAR(200),\n);\n\n\nIF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_raw_f'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_raw_f\nEND;\n\nCREATE TABLE active_job_seekings_landing_raw_f (\n    prefecture             NVARCHAR(200),\n    generation             NVARCHAR(200),\n    job             NVARCHAR(200),\n    year_2023             NVARCHAR(200),\n    year_2024             NVARCHAR(200),\n);\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "MergeLandingToCurated",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateCuratedTableIfNotExists",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "WITH pivoted AS (\n    SELECT\n        prefecture_code,\n        sex_code,\n        generation_code,\n        year,\n        job_code,\n        job_count\n    FROM active_job_seekings_landing\n),\np AS (\n    SELECT\n        prefecture_code,\n        sex_code,\n        generation_code,\n        year,\n        MAX(CASE WHEN job_code = 1 THEN job_count END) AS job_1,\n        MAX(CASE WHEN job_code = 2 THEN job_count END) AS job_2,\n        MAX(CASE WHEN job_code = 3 THEN job_count END) AS job_3,\n        MAX(CASE WHEN job_code = 4 THEN job_count END) AS job_4,\n        MAX(CASE WHEN job_code = 5 THEN job_count END) AS job_5,\n        MAX(CASE WHEN job_code = 6 THEN job_count END) AS job_6,\n        MAX(CASE WHEN job_code = 7 THEN job_count END) AS job_7,\n        MAX(CASE WHEN job_code = 8 THEN job_count END) AS job_8,\n        MAX(CASE WHEN job_code = 9 THEN job_count END) AS job_9,\n        MAX(CASE WHEN job_code = 10 THEN job_count END) AS job_10,\n        MAX(CASE WHEN job_code = 11 THEN job_count END) AS job_11,\n        MAX(CASE WHEN job_code = 12 THEN job_count END) AS job_12,\n        MAX(CASE WHEN job_code = 13 THEN job_count END) AS job_13,\n        MAX(CASE WHEN job_code = 14 THEN job_count END) AS job_14,\n        MAX(CASE WHEN job_code = 15 THEN job_count END) AS job_15,\n        MAX(CASE WHEN job_code = 16 THEN job_count END) AS job_16,\n        MAX(CASE WHEN job_code = 17 THEN job_count END) AS job_17,\n        MAX(CASE WHEN job_code = 18 THEN job_count END) AS job_18,\n        MAX(CASE WHEN job_code = 19 THEN job_count END) AS job_19,\n        MAX(CASE WHEN job_code = 20 THEN job_count END) AS job_20,\n        MAX(CASE WHEN job_code = 21 THEN job_count END) AS job_21,\n        MAX(CASE WHEN job_code = 22 THEN job_count END) AS job_22,\n        MAX(CASE WHEN job_code = 23 THEN job_count END) AS job_23,\n        MAX(CASE WHEN job_code = 24 THEN job_count END) AS job_24,\n        MAX(CASE WHEN job_code = 25 THEN job_count END) AS job_25,\n        MAX(CASE WHEN job_code = 26 THEN job_count END) AS job_26,\n        MAX(CASE WHEN job_code = 27 THEN job_count END) AS job_27,\n        MAX(CASE WHEN job_code = 28 THEN job_count END) AS job_28,\n        MAX(CASE WHEN job_code = 29 THEN job_count END) AS job_29,\n        MAX(CASE WHEN job_code = 30 THEN job_count END) AS job_30,\n        MAX(CASE WHEN job_code = 31 THEN job_count END) AS job_31,\n        MAX(CASE WHEN job_code = 32 THEN job_count END) AS job_32,\n        MAX(CASE WHEN job_code = 33 THEN job_count END) AS job_33,\n        MAX(CASE WHEN job_code = 34 THEN job_count END) AS job_34,\n        MAX(CASE WHEN job_code = 35 THEN job_count END) AS job_35,\n        MAX(CASE WHEN job_code = 36 THEN job_count END) AS job_36,\n        MAX(CASE WHEN job_code = 37 THEN job_count END) AS job_37,\n        MAX(CASE WHEN job_code = 38 THEN job_count END) AS job_38,\n        MAX(CASE WHEN job_code = 39 THEN job_count END) AS job_39,\n        MAX(CASE WHEN job_code = 40 THEN job_count END) AS job_40,\n        MAX(CASE WHEN job_code = 41 THEN job_count END) AS job_41,\n        MAX(CASE WHEN job_code = 42 THEN job_count END) AS job_42,\n        MAX(CASE WHEN job_code = 43 THEN job_count END) AS job_43,\n        MAX(CASE WHEN job_code = 44 THEN job_count END) AS job_44,\n        MAX(CASE WHEN job_code = 45 THEN job_count END) AS job_45,\n        MAX(CASE WHEN job_code = 46 THEN job_count END) AS job_46,\n        MAX(CASE WHEN job_code = 47 THEN job_count END) AS job_47,\n        MAX(CASE WHEN job_code = 48 THEN job_count END) AS job_48,\n        MAX(CASE WHEN job_code = 49 THEN job_count END) AS job_49,\n        MAX(CASE WHEN job_code = 50 THEN job_count END) AS job_50,\n        MAX(CASE WHEN job_code = 51 THEN job_count END) AS job_51,\n        MAX(CASE WHEN job_code = 52 THEN job_count END) AS job_52,\n        MAX(CASE WHEN job_code = 53 THEN job_count END) AS job_53,\n        MAX(CASE WHEN job_code = 54 THEN job_count END) AS job_54,\n        MAX(CASE WHEN job_code = 55 THEN job_count END) AS job_55,\n        MAX(CASE WHEN job_code = 56 THEN job_count END) AS job_56,\n        MAX(CASE WHEN job_code = 57 THEN job_count END) AS job_57,\n        MAX(CASE WHEN job_code = 58 THEN job_count END) AS job_58,\n        MAX(CASE WHEN job_code = 59 THEN job_count END) AS job_59,\n        MAX(CASE WHEN job_code = 60 THEN job_count END) AS job_60,\n        MAX(CASE WHEN job_code = 61 THEN job_count END) AS job_61,\n        MAX(CASE WHEN job_code = 62 THEN job_count END) AS job_62,\n        MAX(CASE WHEN job_code = 63 THEN job_count END) AS job_63,\n        MAX(CASE WHEN job_code = 64 THEN job_count END) AS job_64,\n        MAX(CASE WHEN job_code = 65 THEN job_count END) AS job_65,\n        MAX(CASE WHEN job_code = 66 THEN job_count END) AS job_66,\n        MAX(CASE WHEN job_code = 67 THEN job_count END) AS job_67,\n        MAX(CASE WHEN job_code = 68 THEN job_count END) AS job_68,\n        MAX(CASE WHEN job_code = 69 THEN job_count END) AS job_69,\n        MAX(CASE WHEN job_code = 70 THEN job_count END) AS job_70,\n        MAX(CASE WHEN job_code = 71 THEN job_count END) AS job_71,\n        MAX(CASE WHEN job_code = 72 THEN job_count END) AS job_72,\n        MAX(CASE WHEN job_code = 73 THEN job_count END) AS job_73,\n        MAX(CASE WHEN job_code = 74 THEN job_count END) AS job_74,\n        MAX(CASE WHEN job_code = 75 THEN job_count END) AS job_75,\n        MAX(CASE WHEN job_code = 76 THEN job_count END) AS job_76,\n        MAX(CASE WHEN job_code = 77 THEN job_count END) AS job_77,\n        MAX(CASE WHEN job_code = 78 THEN job_count END) AS job_78,\n        MAX(CASE WHEN job_code = 79 THEN job_count END) AS job_79,\n        MAX(CASE WHEN job_code = 80 THEN job_count END) AS job_80,\n        MAX(CASE WHEN job_code = 81 THEN job_count END) AS job_81,\n        MAX(CASE WHEN job_code = 82 THEN job_count END) AS job_82,\n        MAX(CASE WHEN job_code = 83 THEN job_count END) AS job_83,\n        MAX(CASE WHEN job_code = 84 THEN job_count END) AS job_84,\n        MAX(CASE WHEN job_code = 85 THEN job_count END) AS job_85,\n        MAX(CASE WHEN job_code = 86 THEN job_count END) AS job_86\n    FROM pivoted\n    GROUP BY prefecture_code, sex_code, generation_code, year\n)\nMERGE active_job_seekings_curated AS tgt\nUSING p\nON tgt.prefecture_code = p.prefecture_code\nAND tgt.sex_code= p.sex_code\nAND tgt.generation_code= p.generation_code\nAND tgt.year = p.year\nWHEN MATCHED THEN\n    UPDATE SET\n        tgt.job_1 = p.job_1,\n        tgt.job_2 = p.job_2,\n        tgt.job_3 = p.job_3,\n        tgt.job_4 = p.job_4,\n        tgt.job_5 = p.job_5,\n        tgt.job_6 = p.job_6,\n        tgt.job_7 = p.job_7,\n        tgt.job_8 = p.job_8,\n        tgt.job_9 = p.job_9,\n        tgt.job_10 = p.job_10,\n        tgt.job_11 = p.job_11,\n        tgt.job_12 = p.job_12,\n        tgt.job_13 = p.job_13,\n        tgt.job_14 = p.job_14,\n        tgt.job_15 = p.job_15,\n        tgt.job_16 = p.job_16,\n        tgt.job_17 = p.job_17,\n        tgt.job_18 = p.job_18,\n        tgt.job_19 = p.job_19,\n        tgt.job_20 = p.job_20,\n        tgt.job_21 = p.job_21,\n        tgt.job_22 = p.job_22,\n        tgt.job_23 = p.job_23,\n        tgt.job_24 = p.job_24,\n        tgt.job_25 = p.job_25,\n        tgt.job_26 = p.job_26,\n        tgt.job_27 = p.job_27,\n        tgt.job_28 = p.job_28,\n        tgt.job_29 = p.job_29,\n        tgt.job_30 = p.job_30,\n        tgt.job_31 = p.job_31,\n        tgt.job_32 = p.job_32,\n        tgt.job_33 = p.job_33,\n        tgt.job_34 = p.job_34,\n        tgt.job_35 = p.job_35,\n        tgt.job_36 = p.job_36,\n        tgt.job_37 = p.job_37,\n        tgt.job_38 = p.job_38,\n        tgt.job_39 = p.job_39,\n        tgt.job_40 = p.job_40,\n        tgt.job_41 = p.job_41,\n        tgt.job_42 = p.job_42,\n        tgt.job_43 = p.job_43,\n        tgt.job_44 = p.job_44,\n        tgt.job_45 = p.job_45,\n        tgt.job_46 = p.job_46,\n        tgt.job_47 = p.job_47,\n        tgt.job_48 = p.job_48,\n        tgt.job_49 = p.job_49,\n        tgt.job_50 = p.job_50,\n        tgt.job_51 = p.job_51,\n        tgt.job_52 = p.job_52,\n        tgt.job_53 = p.job_53,\n        tgt.job_54 = p.job_54,\n        tgt.job_55 = p.job_55,\n        tgt.job_56 = p.job_56,\n        tgt.job_57 = p.job_57,\n        tgt.job_58 = p.job_58,\n        tgt.job_59 = p.job_59,\n        tgt.job_60 = p.job_60,\n        tgt.job_61 = p.job_61,\n        tgt.job_62 = p.job_62,\n        tgt.job_63 = p.job_63,\n        tgt.job_64 = p.job_64,\n        tgt.job_65 = p.job_65,\n        tgt.job_66 = p.job_66,\n        tgt.job_67 = p.job_67,\n        tgt.job_68 = p.job_68,\n        tgt.job_69 = p.job_69,\n        tgt.job_70 = p.job_70,\n        tgt.job_71 = p.job_71,\n        tgt.job_72 = p.job_72,\n        tgt.job_73 = p.job_73,\n        tgt.job_74 = p.job_74,\n        tgt.job_75 = p.job_75,\n        tgt.job_76 = p.job_76,\n        tgt.job_77 = p.job_77,\n        tgt.job_78 = p.job_78,\n        tgt.job_79 = p.job_79,\n        tgt.job_80 = p.job_80,\n        tgt.job_81 = p.job_81,\n        tgt.job_82 = p.job_82,\n        tgt.job_83 = p.job_83,\n        tgt.job_84 = p.job_84,\n        tgt.job_85 = p.job_85,\n        tgt.job_86 = p.job_86,\n        tgt.updated_at  = GETDATE()\nWHEN NOT MATCHED THEN\n    INSERT (\n        prefecture_code, sex_code, generation_code, year,\n        job_1, job_2, job_3, job_4, job_5, job_6, job_7, job_8, job_9, job_10,\n        job_11, job_12, job_13, job_14, job_15, job_16, job_17, job_18, job_19, job_20,\n        job_21, job_22, job_23, job_24, job_25, job_26, job_27, job_28, job_29, job_30,\n        job_31, job_32, job_33, job_34, job_35, job_36, job_37, job_38, job_39, job_40,\n        job_41, job_42, job_43, job_44, job_45, job_46, job_47, job_48, job_49, job_50,\n        job_51, job_52, job_53, job_54, job_55, job_56, job_57, job_58, job_59, job_60,\n        job_61, job_62, job_63, job_64, job_65, job_66, job_67, job_68, job_69, job_70,\n        job_71, job_72, job_73, job_74, job_75, job_76, job_77, job_78, job_79, job_80,\n        job_81, job_82, job_83, job_84, job_85, job_86,\n        updated_at \n    )\n    VALUES (\n        p.prefecture_code, p.sex_code, p.generation_code, p.year,\n        p.job_1, p.job_2, p.job_3, p.job_4, p.job_5, p.job_6, p.job_7, p.job_8, p.job_9, p.job_10,\n        p.job_11, p.job_12, p.job_13, p.job_14, p.job_15, p.job_16, p.job_17, p.job_18, p.job_19, p.job_20,\n        p.job_21, p.job_22, p.job_23, p.job_24, p.job_25, p.job_26, p.job_27, p.job_28, p.job_29, p.job_30,\n        p.job_31, p.job_32, p.job_33, p.job_34, p.job_35, p.job_36, p.job_37, p.job_38, p.job_39, p.job_40,\n        p.job_41, p.job_42, p.job_43, p.job_44, p.job_45, p.job_46, p.job_47, p.job_48, p.job_49, p.job_50,\n        p.job_51, p.job_52, p.job_53, p.job_54, p.job_55, p.job_56, p.job_57, p.job_58, p.job_59, p.job_60,\n        p.job_61, p.job_62, p.job_63, p.job_64, p.job_65, p.job_66, p.job_67, p.job_68, p.job_69, p.job_70,\n        p.job_71, p.job_72, p.job_73, p.job_74, p.job_75, p.job_76, p.job_77, p.job_78, p.job_79, p.job_80,\n        p.job_81, p.job_82, p.job_83, p.job_84, p.job_85, p.job_86,\n        GETDATE()\n    );\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CreateLandingTable",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateLandingRawTable",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_t'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_t\nEND;\n\nCREATE TABLE active_job_seekings_landing_t (\n    prefecture_code INT,\n    sex_code INT,\n    generation_code INT,\n    job_code INT,\n    year INT,\n    job_count INT,\n);\n\n\nIF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_m'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_m\nEND;\n\nCREATE TABLE active_job_seekings_landing_m (\n    prefecture_code INT,\n    sex_code INT,\n    generation_code INT,\n    job_code INT,\n    year INT,\n    job_count INT,\n);\n\n\nIF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing_f'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing_f\nEND;\n\nCREATE TABLE active_job_seekings_landing_f (\n    prefecture_code INT,\n    sex_code INT,\n    generation_code INT,\n    job_code INT,\n    year INT,\n    job_count INT,\n);\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "UnpivotLandingRaw",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "RawToLandingRawF",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "INSERT INTO active_job_seekings_landing_t (prefecture_code, sex_code, generation_code, job_code, year, job_count)\nSELECT\n    prefecture,\n    0,\n    generation,\n    job,\n    CAST(REPLACE(year_col, 'year_', '') AS INT) AS year,\n    CASE \n        WHEN job_count = '' THEN NULL\n        ELSE TRY_CAST(job_count AS INT)\n    END AS job_count\nFROM (\n    SELECT\n        prefecture,\n        generation,\n        job,\n        year_2023,\n        year_2024\n    FROM active_job_seekings_landing_raw_t\n) AS src\nUNPIVOT (\n    job_count FOR year_col IN (\n        year_2023,\n        year_2024\n    )\n) AS unpvt;\n\nINSERT INTO active_job_seekings_landing_m (prefecture_code, sex_code, generation_code, job_code, year, job_count)\nSELECT\n    prefecture,\n    1,\n    generation,\n    job,\n    CAST(REPLACE(year_col, 'year_', '') AS INT) AS year,\n    CASE \n        WHEN job_count = '' THEN NULL\n        ELSE TRY_CAST(job_count AS INT)\n    END AS job_count\nFROM (\n    SELECT\n        prefecture,\n        generation,\n        job,\n        year_2023,\n        year_2024\n    FROM active_job_seekings_landing_raw_m\n) AS src\nUNPIVOT (\n    job_count FOR year_col IN (\n        year_2023,\n        year_2024\n    )\n) AS unpvt;\n\nINSERT INTO active_job_seekings_landing_f (prefecture_code, sex_code, generation_code, job_code, year, job_count)\nSELECT\n    prefecture,\n    2,\n    generation,\n    job,\n    CAST(REPLACE(year_col, 'year_', '') AS INT) AS year,\n    CASE \n        WHEN job_count = '' THEN NULL\n        ELSE TRY_CAST(job_count AS INT)\n    END AS job_count\nFROM (\n    SELECT\n        prefecture,\n        generation,\n        job,\n        year_2023,\n        year_2024\n    FROM active_job_seekings_landing_raw_f\n) AS src\nUNPIVOT (\n    job_count FOR year_col IN (\n        year_2023,\n        year_2024\n    )\n) AS unpvt;\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CreateCuratedTableIfNotExists",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "UnionLanding",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF NOT EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_curated'\n)\nBEGIN\nCREATE TABLE active_job_seekingss_curated (\n    prefecture_code INT NOT NULL,\n    sex_code INT NOT NULL,\n    generation_code INT NOT NULL,\n    year INT NOT NULL,\n    job_1 INT NULL,\n    job_2 INT NULL,\n    job_3 INT NULL,\n    job_4 INT NULL,\n    job_5 INT NULL,\n    job_6 INT NULL,\n    job_7 INT NULL,\n    job_8 INT NULL,\n    job_9 INT NULL,\n    job_10 INT NULL,\n    job_11 INT NULL,\n    job_12 INT NULL,\n    job_13 INT NULL,\n    job_14 INT NULL,\n    job_15 INT NULL,\n    job_16 INT NULL,\n    job_17 INT NULL,\n    job_18 INT NULL,\n    job_19 INT NULL,\n    job_20 INT NULL,\n    job_21 INT NULL,\n    job_22 INT NULL,\n    job_23 INT NULL,\n    job_24 INT NULL,\n    job_25 INT NULL,\n    job_26 INT NULL,\n    job_27 INT NULL,\n    job_28 INT NULL,\n    job_29 INT NULL,\n    job_30 INT NULL,\n    job_31 INT NULL,\n    job_32 INT NULL,\n    job_33 INT NULL,\n    job_34 INT NULL,\n    job_35 INT NULL,\n    job_36 INT NULL,\n    job_37 INT NULL,\n    job_38 INT NULL,\n    job_39 INT NULL,\n    job_40 INT NULL,\n    job_41 INT NULL,\n    job_42 INT NULL,\n    job_43 INT NULL,\n    job_44 INT NULL,\n    job_45 INT NULL,\n    job_46 INT NULL,\n    job_47 INT NULL,\n    job_48 INT NULL,\n    job_49 INT NULL,\n    job_50 INT NULL,\n    job_51 INT NULL,\n    job_52 INT NULL,\n    job_53 INT NULL,\n    job_54 INT NULL,\n    job_55 INT NULL,\n    job_56 INT NULL,\n    job_57 INT NULL,\n    job_58 INT NULL,\n    job_59 INT NULL,\n    job_60 INT NULL,\n    job_61 INT NULL,\n    job_62 INT NULL,\n    job_63 INT NULL,\n    job_64 INT NULL,\n    job_65 INT NULL,\n    job_66 INT NULL,\n    job_67 INT NULL,\n    job_68 INT NULL,\n    job_69 INT NULL,\n    job_70 INT NULL,\n    job_71 INT NULL,\n    job_72 INT NULL,\n    job_73 INT NULL,\n    job_74 INT NULL,\n    job_75 INT NULL,\n    job_76 INT NULL,\n    job_77 INT NULL,\n    job_78 INT NULL,\n    job_79 INT NULL,\n    job_80 INT NULL,\n    job_81 INT NULL,\n    job_82 INT NULL,\n    job_83 INT NULL,\n    job_84 INT NULL,\n    job_85 INT NULL,\n    job_86 INT NULL,\n    updated_at DATETIME DEFAULT GETDATE(),\n    CONSTRAINT PK_job_seekings PRIMARY KEY (prefecture_code, sex_code, generation_code, year)\n);\nEND;\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "RawToLandingRawM",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "RawToLandingRawT",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "prefecture",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "generation",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "job",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "physicalType": "String",
+                                    "ordinal": 5
+                                },
+                                "sink": {
+                                    "name": "year_2023",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "physicalType": "String",
+                                    "ordinal": 8
+                                },
+                                "sink": {
+                                    "name": "year_2024",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_active_job_seekings_2023_2024_55_59",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_active_job_seekings_2023_2024_m",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "RawToLandingRawF",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "RawToLandingRawM",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "prefecture",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "generation",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "job",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "physicalType": "String",
+                                    "ordinal": 6
+                                },
+                                "sink": {
+                                    "name": "year_2023",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "physicalType": "String",
+                                    "ordinal": 9
+                                },
+                                "sink": {
+                                    "name": "year_2024",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_active_job_seekings_2023_2024_55_59",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_active_job_seekings_2023_2024_f",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "DropLanding",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "MergeLandingToCurated",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "DROP TABLE active_job_seekings_landing_raw_t\n\nDROP TABLE active_job_seekings_landing_raw_m\n\nDROP TABLE active_job_seekings_landing_raw_f\n\nDROP TABLE active_job_seekings_landing\n\nDROP TABLE active_job_seekings_landing_t\n\nDROP TABLE active_job_seekings_landing_m\n\nDROP TABLE active_job_seekings_landing_f"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "UnionLanding",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "UnpivotLandingRaw",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'active_job_seekings_landing'\n)\nBEGIN\n    DROP TABLE active_job_seekings_landing\nEND;\n\nCREATE TABLE active_job_seekings_landing (\n    prefecture_code INT,\n    sex_code INT,\n    generation_code INT,\n    job_code INT,\n    year INT,\n    job_count INT,\n);\n\nINSERT INTO active_job_seekings_landing (prefecture_code, sex_code, generation_code, job_code, year, job_count)\n    SELECT\n        prefecture_code, \n        sex_code, \n        generation_code, \n        job_code, \n        year, \n        job_count\n    FROM active_job_seekings_landing_t\n\n        UNION ALL\n\n    SELECT\n        prefecture_code, \n        sex_code, \n        generation_code, \n        job_code, \n        year, \n        job_count\n    FROM active_job_seekings_landing_m\n\n        UNION ALL\n\n    SELECT\n        prefecture_code, \n        sex_code, \n        generation_code, \n        job_code, \n        year, \n        job_count\n    FROM active_job_seekings_landing_f\n\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-20T01:39:18Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

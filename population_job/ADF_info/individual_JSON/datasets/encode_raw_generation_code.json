@@ -1,0 +1,33 @@
+{
+    "name": "encode_raw_generation_code",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureBlobStorage1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": "generation",
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "demogra_code.xlsx",
+                "folderPath": "government-statistical/job",
+                "container": "raw-data"
+            },
+            "range": "A1:C12"
+        },
+        "schema": [
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

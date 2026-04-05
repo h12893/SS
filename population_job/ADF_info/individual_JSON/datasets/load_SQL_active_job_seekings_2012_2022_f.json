@@ -1,0 +1,74 @@
+{
+    "name": "load_SQL_active_job_seekings_2012_2022_f",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "prefecture",
+                "type": "nvarchar"
+            },
+            {
+                "name": "generation",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2012",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2013",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2014",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2015",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2016",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2017",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2018",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2019",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2020",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2021",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year_2022",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "active_job_seekings_landing_raw_f"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
