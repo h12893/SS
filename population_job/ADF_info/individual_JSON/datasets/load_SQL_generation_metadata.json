@@ -1,0 +1,27 @@
+{
+    "name": "load_SQL_generation_metadata",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "generation_code",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "generation",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "generation_metadata_codes"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

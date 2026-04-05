@@ -1,0 +1,27 @@
+{
+    "name": "load_SQL_sex_metadata",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "sex_code",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "sex",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "sex_metadata_codes"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

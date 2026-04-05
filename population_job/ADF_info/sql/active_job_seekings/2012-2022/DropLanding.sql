@@ -1,0 +1,13 @@
+DROP TABLE active_job_seekings_landing_raw_t
+
+DROP TABLE active_job_seekings_landing_raw_m
+
+DROP TABLE active_job_seekings_landing_raw_f
+
+DROP TABLE active_job_seekings_landing
+
+DROP TABLE active_job_seekings_landing_t
+
+DROP TABLE active_job_seekings_landing_m
+
+DROP TABLE active_job_seekings_landing_f
