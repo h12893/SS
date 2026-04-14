@@ -83,7 +83,7 @@ active_job_openings_curatedと同様。
 
 # active_job_seekings_curated
 
-active_job_openings_curatedと同様の処理に加えて以下の処理を実行。
+active_job_openings_curatedと同様の処理に加えて以下の処理を実行。  
 ただし、「UNPIVOT処理でlanding_rawテーブルを縦持ちのlandingテーブルに変換」「PIVOT諸例でlandingテーブルを業種コードに関して横持のcuratedテーブルに変換」「MERGE ロジック」以外は、データレイクへの格納前に手作業で実施。
 
 ## 性別に関して縦持ち
