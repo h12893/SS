@@ -1,15 +1,12 @@
-格納されているフォルダやファイルの一覧
-
-----------------------------------------------------------------------------------------------------
-
+# /population_job
 - /ADF_info
     - /ARM_template（git管理対象外）
         - 20260316.zip
         - 20260330.zip
         - 20260405.zip
-        - ARMテンプレート内容一覧.md：各ARMテンプレート出力時点でのADF構成の一覧。
-    - individual_JSON
-        - /dataset
+        - ARMテンプレート内容一覧.md
+    - /individual_JSON
+        - /datasets
             - encode_raw_active_job_openings_2012_2022.json
             - encode_raw_active_job_openings_2023_2024.json
             - encode_raw_active_job_openings_code.json
@@ -64,7 +61,7 @@
             - load_SQL_generation_metadata.json
             - load_SQL_population.json
             - load_SQL_sex_metadata.json
-        - /linkedService（git管理対象外）
+        - /linkedServices（git管理対象外）
             - AzureBlobStorage1.json
             - Connect_dbmake2026datalake.json
             - Connect_population_dynamics_prefecture.json
@@ -119,14 +116,14 @@
                 - MergeLandingToCurated.sql
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
-            - /2022-2024
+            - /2023-2024
                 - CreateCuratedTableIfNotExists.sql
                 - CreateLandingRawTable.sql
                 - CreateLandingTable.sql
                 - MergeLandingToCurated.sql
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
-        - /active_job_seekings（パイプラインとしては年代別で12通り別々に処理を行っているが、読み込む元データが異なるだけでSQLの中身は等しいので「年齢計」のSQLのみを格納）
+        - /active_job_seekings
             - /2012-2022
                 - CreateCuratedTableIfNotExists.sql
                 - CreateLandingRawTable.sql
@@ -135,7 +132,7 @@
                 - MergeLandingToCurated.sql
                 - UnionLanding.sql
                 - UnpivotLandingRaw.sql
-            - /2022-2024
+            - /2023-2024
                 - CreateCuratedTableIfNotExists.sql
                 - CreateLandingRawTable.sql
                 - CreateLandingTable.sql
@@ -151,7 +148,7 @@
                 - MergeLandingToCurated.sql
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
-            - /2022-2024
+            - /2023-2024
                 - CreateCuratedTableIfNotExists.sql
                 - CreateLandingRawTable.sql
                 - CreateLandingTable.sql
@@ -164,7 +161,7 @@
                 - CreateMetadataCodes.sql
             - /demogra_metadata_codes
                 - CreateMetadataCodes.sql
-            - /prefecture
+            - /prefecture_metadata_codes
                 - CreateMetadataCodes.sql
                 - InsertCityInfo.sql
                 - InsertElseInfo.sql
@@ -181,34 +178,81 @@
     - restoration.md
 - /docs
     - /metadata
-        - dataset_metadata.md：データテーブルの説明。
-        - column_metadata.md：各カラムの意味・型・制約などの説明。
-        - transformation_metadata.md：Raw → Landing → Curated の変換ルールの説明。
-        - region_type_definition.md：コード値と名称の対応表。
+        - code_definition.md
+        - column_metadata.md
+        - dataset_metadata.md
+        - transformation_metadata.md
 - /PowerBI
     - /dashboard（git管理対象外）
+        - 20260321.pbix
+        - 20260405.pbix
+        - dashboard_contents.md
         - japan_p.json
-        - population_job.pbix
     - /snapshot（git管理対象外）
-        - 2024_job_13_Ratio_by_Total_map.png
-        - 2024_job_13_Ratio_map_mid.png
-        - 2024_Population_Ratio_map_100%.png
-        - 2024_Population_Ratio_map_mid.png
+        - /人口比・就職件数比_20260405
+            - 岩手.png
+            - 宮城.png
+            - 山形.png
+            - 秋田.png
+            - 青森.png
+            - 全国.png
+            - 東京.png
+            - 福島.png
+        - /地図表示_20260329
+            - 2024_job_13_Ratio_by_Total_map.png
+            - 2024_job_13_Ratio_map_mid.png
+            - 2024_Population_Ratio_map_100%.png
+            - 2024_Population_Ratio_map_mid.png
     - connect_setting.md（git管理対象外）
     - DAX_query.md
 - /raw_data（git管理対象外）
     - /job
-        - aactive_job_openings_cods.csv
-        - 就職件数_常用のみ_都道府県別_中分類_2012~2024.xlsx
-        - 新規求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
-        - 新規求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
-        - 平均求人賃金_常用フルタイム_都道府県別_中分類_2012~2024.xlsx
-        - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
-        - 有効求職者数-新規求職者_常用のみ_都道府県別_男女別_年代別2011~2024.xlsx
-        - 有効求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
-        - 有効求人数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx
-        - 有効求人数-新規求人数-就職件数_一般_都道府県別_2011~2024.xlsx
+        - /「経済センサス」（総務省・経済産業省）
+            - 経済セ ンサス_産業_雇用者数_都道府県_2012年_1.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2012年_2.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2012年_3.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2012年_4.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2012年_5.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2016年_1.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2016年_2.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2016年_3.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2016年_4.csv
+            - 経済セ ンサス_産業_雇用者数_都道府県_2016年_5.csv
+            - 経済セ ンサス_産業_事業所数_雇用者数_都道府県_2021年_1.csv
+            - 経済セ ンサス_産業_事業所数_雇用者数_都道府県_2021年_2.csv
+            - 経済セ ンサス_産業_事業所数_雇用者数_都道府県_2012年.csv
+            - 経済セ ンサス_産業_事業所数_雇用者数_都道府県_2016年.csv
+        - /「労働力調査」（総務省）
+            - 労働力調査_年齢階級別_産業別_就業者数.csv
+        - /厚生労働省ホームページ 一般職業紹介状況(職業安定業務統計)
+            - active_job_openings_code.csv
+            - demogra_code.xlsx
+            - 就職件数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+            - 就職件数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx
+            - 就職件数_常用のみ_都道府県別_中分類_2012~2024_確認用.xlsx
+            - 新規求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
+            - 新規求求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+            - 平均求人賃金_常用フルタイム_都道府県別_中分類_2012~2024.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_rownum追加.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_19歳以下.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_20～24歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_25～29歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_30～34歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_35～39歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_40～44歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_45～49歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_50～54歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_55～59歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_60～64歳.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_65歳以上.xlsx
+            - 有効求職者数_常用のみ_都道府県別_男女別_年代別_中分類_2012~2024_コード変換済み_年齢計.xlsx
+            - 有効求人数_常用のみ_都道府県別_中分類_2012~2024.xlsx
+            - 有効求人数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx
+            - 有効求人数-新規求人数-就職件数_一般_都道府県別_2011~2024.xlsx
     - /population
+        - /「人口動向調査」（厚生労働省）
         - 人口動態_都道府県_2016.csv
         - 人口動態_都道府県_2017.csv
         - 人口動態_都道府県_2018.csv
@@ -218,5 +262,8 @@
         - 人口動態_都道府県_2022.csv
         - 人口動態_都道府県_2023.csv
         - 人口動態_都道府県_2024.csv
+    - /「労働力調査」（総務省）
+        - 労働力調査_就業状態別15歳以上人口.csv
     - data_source.md
-
+- contents_list.md
+- detail.md
