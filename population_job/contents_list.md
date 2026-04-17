@@ -4,6 +4,7 @@
         - 20260316.zip
         - 20260330.zip
         - 20260405.zip
+        - 20260417.zip
         - ARMテンプレート内容一覧.md
     - /individual_JSON
         - /datasets
@@ -37,6 +38,8 @@
             - encode_raw_employments_2012_2022.json
             - encode_raw_employments_2023_2024.json
             - encode_raw_generation_code.json
+            - encode_raw_laborforce_generation_industry_employ.json
+            - encode_raw_laborforce_generation_industry_employ_code.json
             - encode_raw_population_2016.json
             - encode_raw_population_2017.json
             - encode_raw_population_2018.json
@@ -59,7 +62,9 @@
             - load_SQL_employments_2012_2022.json
             - load_SQL_employments_2023_2024.json
             - load_SQL_generation_metadata.json
-            - load_SQL_population.json
+            - load_SQL_generation_metadata.json
+            - load_SQL_laborforce_generation_industry_employ.json
+            - load_SQL_laborforce_generation_industry_employ_code.json
             - load_SQL_sex_metadata.json
         - /linkedServices（git管理対象外）
             - AzureBlobStorage1.json
@@ -96,6 +101,8 @@
             - PL_demogra_metadata_codes.json
             - PL_employments_2012-2022.json
             - PL_employments_2023-2024.json
+            - PL_laborforce_generation_industry_employ.json
+            - PL_laborforce_generation_industry_employ_codes.json
             - PL_population_2016.json
             - PL_population_2017.json
             - PL_population_2018.json
@@ -155,11 +162,18 @@
                 - MergeLandingToCurated.sql
                 - PreprocessLandingRaw.sql
                 - UnpivotLandingRaw.sql
+        - /laborforce_generation_industry_employ
+            - CreateCuratedTable.sql
+            - CreateLandingRawTable.sql
+            - PreprocesInsertLandingRawIntoCurated.sql
         - /metadata_codes
             - /active_job_openings_metadata_codes
                 - CleanJobName.sql
                 - CreateMetadataCodes.sql
             - /demogra_metadata_codes
+                - CreateMetadataCodes.sql
+            - /laborforce_generation_industry_employ
+                - CleanJobName.sql
                 - CreateMetadataCodes.sql
             - /prefecture_metadata_codes
                 - CreateMetadataCodes.sql
@@ -224,9 +238,10 @@
             - 経済セ ンサス_産業_事業所数_雇用者数_都道府県_2016年.csv
         - /「労働力調査」（総務省）
             - 労働力調査_年齢階級別_産業別_就業者数.csv
-        - /厚生労働省ホームページ 一般職業紹介状況(職業安定業務統計)
+        - /コード値
             - active_job_openings_code.csv
             - demogra_code.xlsx
+        - /厚生労働省ホームページ 一般職業紹介状況(職業安定業務統計)
             - 就職件数_常用のみ_都道府県別_中分類_2012~2024.xlsx
             - 就職件数_常用のみ_都道府県別_中分類_2012~2024_rownum追加.xlsx
             - 就職件数_常用のみ_都道府県別_中分類_2012~2024_確認用.xlsx

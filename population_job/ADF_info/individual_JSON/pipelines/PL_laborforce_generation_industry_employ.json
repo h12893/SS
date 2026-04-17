@@ -1,0 +1,1429 @@
+{
+    "name": "PL_laborforce_generation_industry_employ",
+    "properties": {
+        "activities": [
+            {
+                "name": "RawToLandingRaw",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "CreateCuratedTable",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings",
+                            "skipLineCount": 12
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "column_A",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "column_B",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "column_C",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 4
+                                },
+                                "sink": {
+                                    "name": "sex_code",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 5
+                                },
+                                "sink": {
+                                    "name": "column_E",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 6
+                                },
+                                "sink": {
+                                    "name": "column_F",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 7
+                                },
+                                "sink": {
+                                    "name": "column_G",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 8
+                                },
+                                "sink": {
+                                    "name": "column_H",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 9
+                                },
+                                "sink": {
+                                    "name": "generation",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 10
+                                },
+                                "sink": {
+                                    "name": "column_J",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 11
+                                },
+                                "sink": {
+                                    "name": "column_K",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 12
+                                },
+                                "sink": {
+                                    "name": "column_L",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 13
+                                },
+                                "sink": {
+                                    "name": "column_M",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 14
+                                },
+                                "sink": {
+                                    "name": "column_N",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 15
+                                },
+                                "sink": {
+                                    "name": "year",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 16
+                                },
+                                "sink": {
+                                    "name": "column_P",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 17
+                                },
+                                "sink": {
+                                    "name": "job_1",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 18
+                                },
+                                "sink": {
+                                    "name": "job_2",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 19
+                                },
+                                "sink": {
+                                    "name": "job_3",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 20
+                                },
+                                "sink": {
+                                    "name": "job_4",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 21
+                                },
+                                "sink": {
+                                    "name": "job_5",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 22
+                                },
+                                "sink": {
+                                    "name": "job_6",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 23
+                                },
+                                "sink": {
+                                    "name": "job_7",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 24
+                                },
+                                "sink": {
+                                    "name": "job_8",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 25
+                                },
+                                "sink": {
+                                    "name": "job_9",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 26
+                                },
+                                "sink": {
+                                    "name": "job_10",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 27
+                                },
+                                "sink": {
+                                    "name": "job_11",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 28
+                                },
+                                "sink": {
+                                    "name": "job_12",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 29
+                                },
+                                "sink": {
+                                    "name": "job_13",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 30
+                                },
+                                "sink": {
+                                    "name": "job_14",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 31
+                                },
+                                "sink": {
+                                    "name": "job_15",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 32
+                                },
+                                "sink": {
+                                    "name": "job_16",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 33
+                                },
+                                "sink": {
+                                    "name": "job_17",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 34
+                                },
+                                "sink": {
+                                    "name": "job_18",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 35
+                                },
+                                "sink": {
+                                    "name": "job_19",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 36
+                                },
+                                "sink": {
+                                    "name": "job_20",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 37
+                                },
+                                "sink": {
+                                    "name": "job_21",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 38
+                                },
+                                "sink": {
+                                    "name": "job_22",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 39
+                                },
+                                "sink": {
+                                    "name": "job_23",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 40
+                                },
+                                "sink": {
+                                    "name": "job_24",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 41
+                                },
+                                "sink": {
+                                    "name": "job_25",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 42
+                                },
+                                "sink": {
+                                    "name": "job_26",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 43
+                                },
+                                "sink": {
+                                    "name": "job_27",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 44
+                                },
+                                "sink": {
+                                    "name": "job_28",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 45
+                                },
+                                "sink": {
+                                    "name": "job_29",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 46
+                                },
+                                "sink": {
+                                    "name": "job_30",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 47
+                                },
+                                "sink": {
+                                    "name": "job_31",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 48
+                                },
+                                "sink": {
+                                    "name": "job_32",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 49
+                                },
+                                "sink": {
+                                    "name": "job_33",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 50
+                                },
+                                "sink": {
+                                    "name": "job_34",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 51
+                                },
+                                "sink": {
+                                    "name": "job_35",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 52
+                                },
+                                "sink": {
+                                    "name": "job_36",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 53
+                                },
+                                "sink": {
+                                    "name": "job_37",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 54
+                                },
+                                "sink": {
+                                    "name": "job_38",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 55
+                                },
+                                "sink": {
+                                    "name": "job_39",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 56
+                                },
+                                "sink": {
+                                    "name": "job_40",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 57
+                                },
+                                "sink": {
+                                    "name": "job_41",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 58
+                                },
+                                "sink": {
+                                    "name": "job_42",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 59
+                                },
+                                "sink": {
+                                    "name": "job_43",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 60
+                                },
+                                "sink": {
+                                    "name": "job_44",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 61
+                                },
+                                "sink": {
+                                    "name": "job_45",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 62
+                                },
+                                "sink": {
+                                    "name": "job_46",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 63
+                                },
+                                "sink": {
+                                    "name": "job_47",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 64
+                                },
+                                "sink": {
+                                    "name": "job_48",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 65
+                                },
+                                "sink": {
+                                    "name": "job_49",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 66
+                                },
+                                "sink": {
+                                    "name": "job_50",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 67
+                                },
+                                "sink": {
+                                    "name": "job_51",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 68
+                                },
+                                "sink": {
+                                    "name": "job_52",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 69
+                                },
+                                "sink": {
+                                    "name": "job_53",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 70
+                                },
+                                "sink": {
+                                    "name": "job_54",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 71
+                                },
+                                "sink": {
+                                    "name": "job_55",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 72
+                                },
+                                "sink": {
+                                    "name": "job_56",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 73
+                                },
+                                "sink": {
+                                    "name": "job_57",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 74
+                                },
+                                "sink": {
+                                    "name": "job_58",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 75
+                                },
+                                "sink": {
+                                    "name": "job_59",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 76
+                                },
+                                "sink": {
+                                    "name": "job_60",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 77
+                                },
+                                "sink": {
+                                    "name": "job_61",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 78
+                                },
+                                "sink": {
+                                    "name": "job_62",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 79
+                                },
+                                "sink": {
+                                    "name": "job_63",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 80
+                                },
+                                "sink": {
+                                    "name": "job_64",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 81
+                                },
+                                "sink": {
+                                    "name": "job_65",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 82
+                                },
+                                "sink": {
+                                    "name": "job_66",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 83
+                                },
+                                "sink": {
+                                    "name": "job_67",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 84
+                                },
+                                "sink": {
+                                    "name": "job_68",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 85
+                                },
+                                "sink": {
+                                    "name": "job_69",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 86
+                                },
+                                "sink": {
+                                    "name": "job_70",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 87
+                                },
+                                "sink": {
+                                    "name": "job_71",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 88
+                                },
+                                "sink": {
+                                    "name": "job_72",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 89
+                                },
+                                "sink": {
+                                    "name": "job_73",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 90
+                                },
+                                "sink": {
+                                    "name": "job_74",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 91
+                                },
+                                "sink": {
+                                    "name": "job_75",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 92
+                                },
+                                "sink": {
+                                    "name": "job_76",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 93
+                                },
+                                "sink": {
+                                    "name": "job_77",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 94
+                                },
+                                "sink": {
+                                    "name": "job_78",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 95
+                                },
+                                "sink": {
+                                    "name": "job_79",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 96
+                                },
+                                "sink": {
+                                    "name": "job_80",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 97
+                                },
+                                "sink": {
+                                    "name": "job_81",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 98
+                                },
+                                "sink": {
+                                    "name": "job_82",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 99
+                                },
+                                "sink": {
+                                    "name": "job_83",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 100
+                                },
+                                "sink": {
+                                    "name": "job_84",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 101
+                                },
+                                "sink": {
+                                    "name": "job_85",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 102
+                                },
+                                "sink": {
+                                    "name": "job_86",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 103
+                                },
+                                "sink": {
+                                    "name": "job_87",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 104
+                                },
+                                "sink": {
+                                    "name": "job_88",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 105
+                                },
+                                "sink": {
+                                    "name": "job_89",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 106
+                                },
+                                "sink": {
+                                    "name": "job_90",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 107
+                                },
+                                "sink": {
+                                    "name": "job_91",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 108
+                                },
+                                "sink": {
+                                    "name": "job_92",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 109
+                                },
+                                "sink": {
+                                    "name": "job_93",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 110
+                                },
+                                "sink": {
+                                    "name": "job_94",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 111
+                                },
+                                "sink": {
+                                    "name": "job_95",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 112
+                                },
+                                "sink": {
+                                    "name": "job_96",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 113
+                                },
+                                "sink": {
+                                    "name": "job_97",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 114
+                                },
+                                "sink": {
+                                    "name": "job_98",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 115
+                                },
+                                "sink": {
+                                    "name": "job_99",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_laborforce_generation_industry_employ",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_laborforce_generation_industry_employ",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "CreateLandingRawTable",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'laborforce_generation_industry_employ_landing_raw'\n)\nBEGIN\n    DROP TABLE laborforce_generation_industry_employ_landing_raw\nEND;\n\nCREATE TABLE laborforce_generation_industry_employ_landing_raw (\n    column_A NVARCHAR(200),\n    column_B NVARCHAR(200),\n    column_C NVARCHAR(200),\n    sex_code NVARCHAR(200),\n    column_E NVARCHAR(200),\n    column_F NVARCHAR(200),\n    column_G NVARCHAR(200),\n    column_H NVARCHAR(200),\n    generation NVARCHAR(200),\n    column_J NVARCHAR(200),\n    column_K NVARCHAR(200),\n    column_L NVARCHAR(200),\n    column_M NVARCHAR(200),\n    column_N NVARCHAR(200),\n    year NVARCHAR(200),\n    column_P NVARCHAR(200),\n    job_1 NVARCHAR(200),\n    job_2 NVARCHAR(200),\n    job_3 NVARCHAR(200),\n    job_4 NVARCHAR(200),\n    job_5 NVARCHAR(200),\n    job_6 NVARCHAR(200),\n    job_7 NVARCHAR(200),\n    job_8 NVARCHAR(200),\n    job_9 NVARCHAR(200),\n    job_10 NVARCHAR(200),\n    job_11 NVARCHAR(200),\n    job_12 NVARCHAR(200),\n    job_13 NVARCHAR(200),\n    job_14 NVARCHAR(200),\n    job_15 NVARCHAR(200),\n    job_16 NVARCHAR(200),\n    job_17 NVARCHAR(200),\n    job_18 NVARCHAR(200),\n    job_19 NVARCHAR(200),\n    job_20 NVARCHAR(200),\n    job_21 NVARCHAR(200),\n    job_22 NVARCHAR(200),\n    job_23 NVARCHAR(200),\n    job_24 NVARCHAR(200),\n    job_25 NVARCHAR(200),\n    job_26 NVARCHAR(200),\n    job_27 NVARCHAR(200),\n    job_28 NVARCHAR(200),\n    job_29 NVARCHAR(200),\n    job_30 NVARCHAR(200),\n    job_31 NVARCHAR(200),\n    job_32 NVARCHAR(200),\n    job_33 NVARCHAR(200),\n    job_34 NVARCHAR(200),\n    job_35 NVARCHAR(200),\n    job_36 NVARCHAR(200),\n    job_37 NVARCHAR(200),\n    job_38 NVARCHAR(200),\n    job_39 NVARCHAR(200),\n    job_40 NVARCHAR(200),\n    job_41 NVARCHAR(200),\n    job_42 NVARCHAR(200),\n    job_43 NVARCHAR(200),\n    job_44 NVARCHAR(200),\n    job_45 NVARCHAR(200),\n    job_46 NVARCHAR(200),\n    job_47 NVARCHAR(200),\n    job_48 NVARCHAR(200),\n    job_49 NVARCHAR(200),\n    job_50 NVARCHAR(200),\n    job_51 NVARCHAR(200),\n    job_52 NVARCHAR(200),\n    job_53 NVARCHAR(200),\n    job_54 NVARCHAR(200),\n    job_55 NVARCHAR(200),\n    job_56 NVARCHAR(200),\n    job_57 NVARCHAR(200),\n    job_58 NVARCHAR(200),\n    job_59 NVARCHAR(200),\n    job_60 NVARCHAR(200),\n    job_61 NVARCHAR(200),\n    job_62 NVARCHAR(200),\n    job_63 NVARCHAR(200),\n    job_64 NVARCHAR(200),\n    job_65 NVARCHAR(200),\n    job_66 NVARCHAR(200),\n    job_67 NVARCHAR(200),\n    job_68 NVARCHAR(200),\n    job_69 NVARCHAR(200),\n    job_70 NVARCHAR(200),\n    job_71 NVARCHAR(200),\n    job_72 NVARCHAR(200),\n    job_73 NVARCHAR(200),\n    job_74 NVARCHAR(200),\n    job_75 NVARCHAR(200),\n    job_76 NVARCHAR(200),\n    job_77 NVARCHAR(200),\n    job_78 NVARCHAR(200),\n    job_79 NVARCHAR(200),\n    job_80 NVARCHAR(200),\n    job_81 NVARCHAR(200),\n    job_82 NVARCHAR(200),\n    job_83 NVARCHAR(200),\n    job_84 NVARCHAR(200),\n    job_85 NVARCHAR(200),\n    job_86 NVARCHAR(200),\n    job_87 NVARCHAR(200),\n    job_88 NVARCHAR(200),\n    job_89 NVARCHAR(200),\n    job_90 NVARCHAR(200),\n    job_91 NVARCHAR(200),\n    job_92 NVARCHAR(200),\n    job_93 NVARCHAR(200),\n    job_94 NVARCHAR(200),\n    job_95 NVARCHAR(200),\n    job_96 NVARCHAR(200),\n    job_97 NVARCHAR(200),\n    job_98 NVARCHAR(200),\n    job_99 NVARCHAR(200),\n);\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CreateCuratedTable",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "CreateLandingRawTable",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'laborforce_generation_industry_employ_curated'\n)\nBEGIN\n    DROP TABLE laborforce_generation_industry_employ_curated\nEND;\n\nCREATE TABLE laborforce_generation_industry_employ_curated (\n    sex_code INT NOT NULL,\n    generation_code INT NOT NULL,\n    year INT NOT NULL,\n    job_1 INT NULL,\n    job_2 INT NULL,\n    job_3 INT NULL,\n    job_4 INT NULL,\n    job_5 INT NULL,\n    job_6 INT NULL,\n    job_7 INT NULL,\n    job_8 INT NULL,\n    job_9 INT NULL,\n    job_10 INT NULL,\n    job_11 INT NULL,\n    job_12 INT NULL,\n    job_13 INT NULL,\n    job_14 INT NULL,\n    job_15 INT NULL,\n    job_16 INT NULL,\n    job_17 INT NULL,\n    job_18 INT NULL,\n    job_19 INT NULL,\n    job_20 INT NULL,\n    job_21 INT NULL,\n    job_22 INT NULL,\n    job_23 INT NULL,\n    job_24 INT NULL,\n    job_25 INT NULL,\n    job_26 INT NULL,\n    job_27 INT NULL,\n    job_28 INT NULL,\n    job_29 INT NULL,\n    job_30 INT NULL,\n    job_31 INT NULL,\n    job_32 INT NULL,\n    job_33 INT NULL,\n    job_34 INT NULL,\n    job_35 INT NULL,\n    job_36 INT NULL,\n    job_37 INT NULL,\n    job_38 INT NULL,\n    job_39 INT NULL,\n    job_40 INT NULL,\n    job_41 INT NULL,\n    job_42 INT NULL,\n    job_43 INT NULL,\n    job_44 INT NULL,\n    job_45 INT NULL,\n    job_46 INT NULL,\n    job_47 INT NULL,\n    job_48 INT NULL,\n    job_49 INT NULL,\n    job_50 INT NULL,\n    job_51 INT NULL,\n    job_52 INT NULL,\n    job_53 INT NULL,\n    job_54 INT NULL,\n    job_55 INT NULL,\n    job_56 INT NULL,\n    job_57 INT NULL,\n    job_58 INT NULL,\n    job_59 INT NULL,\n    job_60 INT NULL,\n    job_61 INT NULL,\n    job_62 INT NULL,\n    job_63 INT NULL,\n    job_64 INT NULL,\n    job_65 INT NULL,\n    job_66 INT NULL,\n    job_67 INT NULL,\n    job_68 INT NULL,\n    job_69 INT NULL,\n    job_70 INT NULL,\n    job_71 INT NULL,\n    job_72 INT NULL,\n    job_73 INT NULL,\n    job_74 INT NULL,\n    job_75 INT NULL,\n    job_76 INT NULL,\n    job_77 INT NULL,\n    job_78 INT NULL,\n    job_79 INT NULL,\n    job_80 INT NULL,\n    job_81 INT NULL,\n    job_82 INT NULL,\n    job_83 INT NULL,\n    job_84 INT NULL,\n    job_85 INT NULL,\n    job_86 INT NULL,\n    job_87 INT NULL,\n    job_88 INT NULL,\n    job_89 INT NULL,\n    job_90 INT NULL,\n    job_91 INT NULL,\n    job_92 INT NULL,\n    job_93 INT NULL,\n    job_94 INT NULL,\n    job_95 INT NULL,\n    job_96 INT NULL,\n    job_97 INT NULL,\n    job_98 INT NULL,\n    job_99 INT NULL,\n    updated_at DATETIME DEFAULT GETDATE(),\n    CONSTRAINT PK_laborforce_generation_industry_employ_curated PRIMARY KEY (sex_code, generation_code, year)\n);\n"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "PreprocesInsertLandingRawIntoCurated",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "RawToLandingRaw",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "-- generation_codeへの変換\nUPDATE laborforce_generation_industry_employ_landing_raw\nSET generation =\n    CASE\n        WHEN generation = N'15歳以上' THEN 0\n        WHEN generation = N'15～19歳' THEN 1\n        WHEN generation = N'20～24歳' THEN 2\n        WHEN generation = N'25～29歳' THEN 3\n        WHEN generation = N'30～34歳' THEN 4\n        WHEN generation = N'35～39歳' THEN 5\n        WHEN generation = N'40～44歳' THEN 6\n        WHEN generation = N'45～49歳' THEN 7\n        WHEN generation = N'50～54歳' THEN 8\n        WHEN generation = N'55～59歳' THEN 9\n        WHEN generation = N'60～64歳' THEN 10\n        WHEN generation = N'65歳以上' THEN 11\n        ELSE NULL\n    END\nFROM laborforce_generation_industry_employ_landing_raw;\n\n-- yearの'年'削除\nUPDATE laborforce_generation_industry_employ_landing_raw\nSET year=\n    LEFT(year, 4)\nFROM laborforce_generation_industry_employ_landing_raw;\n\n-- landing_rawの内容をcuratedに挿入\nWITH src AS (\n    SELECT\n        TRY_CAST(NULLIF(LTRIM(RTRIM(sex_code)), '') AS INT) AS sex_code,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(generation)), '') AS INT) AS generation,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(year)), '') AS INT) AS year,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_1)), '') AS INT) AS job_1,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_2)), '') AS INT) AS job_2,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_3)), '') AS INT) AS job_3,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_4)), '') AS INT) AS job_4,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_5)), '') AS INT) AS job_5,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_6)), '') AS INT) AS job_6,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_7)), '') AS INT) AS job_7,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_8)), '') AS INT) AS job_8,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_9)), '') AS INT) AS job_9,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_10)), '') AS INT) AS job_10,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_11)), '') AS INT) AS job_11,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_12)), '') AS INT) AS job_12,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_13)), '') AS INT) AS job_13,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_14)), '') AS INT) AS job_14,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_15)), '') AS INT) AS job_15,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_16)), '') AS INT) AS job_16,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_17)), '') AS INT) AS job_17,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_18)), '') AS INT) AS job_18,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_19)), '') AS INT) AS job_19,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_20)), '') AS INT) AS job_20,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_21)), '') AS INT) AS job_21,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_22)), '') AS INT) AS job_22,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_23)), '') AS INT) AS job_23,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_24)), '') AS INT) AS job_24,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_25)), '') AS INT) AS job_25,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_26)), '') AS INT) AS job_26,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_27)), '') AS INT) AS job_27,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_28)), '') AS INT) AS job_28,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_29)), '') AS INT) AS job_29,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_30)), '') AS INT) AS job_30,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_31)), '') AS INT) AS job_31,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_32)), '') AS INT) AS job_32,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_33)), '') AS INT) AS job_33,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_34)), '') AS INT) AS job_34,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_35)), '') AS INT) AS job_35,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_36)), '') AS INT) AS job_36,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_37)), '') AS INT) AS job_37,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_38)), '') AS INT) AS job_38,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_39)), '') AS INT) AS job_39,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_40)), '') AS INT) AS job_40,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_41)), '') AS INT) AS job_41,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_42)), '') AS INT) AS job_42,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_43)), '') AS INT) AS job_43,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_44)), '') AS INT) AS job_44,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_45)), '') AS INT) AS job_45,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_46)), '') AS INT) AS job_46,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_47)), '') AS INT) AS job_47,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_48)), '') AS INT) AS job_48,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_49)), '') AS INT) AS job_49,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_50)), '') AS INT) AS job_50,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_51)), '') AS INT) AS job_51,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_52)), '') AS INT) AS job_52,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_53)), '') AS INT) AS job_53,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_54)), '') AS INT) AS job_54,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_55)), '') AS INT) AS job_55,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_56)), '') AS INT) AS job_56,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_57)), '') AS INT) AS job_57,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_58)), '') AS INT) AS job_58,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_59)), '') AS INT) AS job_59,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_60)), '') AS INT) AS job_60,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_61)), '') AS INT) AS job_61,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_62)), '') AS INT) AS job_62,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_63)), '') AS INT) AS job_63,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_64)), '') AS INT) AS job_64,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_65)), '') AS INT) AS job_65,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_66)), '') AS INT) AS job_66,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_67)), '') AS INT) AS job_67,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_68)), '') AS INT) AS job_68,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_69)), '') AS INT) AS job_69,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_70)), '') AS INT) AS job_70,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_71)), '') AS INT) AS job_71,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_72)), '') AS INT) AS job_72,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_73)), '') AS INT) AS job_73,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_74)), '') AS INT) AS job_74,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_75)), '') AS INT) AS job_75,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_76)), '') AS INT) AS job_76,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_77)), '') AS INT) AS job_77,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_78)), '') AS INT) AS job_78,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_79)), '') AS INT) AS job_79,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_80)), '') AS INT) AS job_80,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_81)), '') AS INT) AS job_81,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_82)), '') AS INT) AS job_82,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_83)), '') AS INT) AS job_83,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_84)), '') AS INT) AS job_84,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_85)), '') AS INT) AS job_85,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_86)), '') AS INT) AS job_86,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_87)), '') AS INT) AS job_87,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_88)), '') AS INT) AS job_88,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_89)), '') AS INT) AS job_89,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_90)), '') AS INT) AS job_90,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_91)), '') AS INT) AS job_91,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_92)), '') AS INT) AS job_92,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_93)), '') AS INT) AS job_93,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_94)), '') AS INT) AS job_94,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_95)), '') AS INT) AS job_95,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_96)), '') AS INT) AS job_96,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_97)), '') AS INT) AS job_97,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_98)), '') AS INT) AS job_98,\n        TRY_CAST(NULLIF(LTRIM(RTRIM(job_99)), '') AS INT) AS job_99\n    FROM laborforce_generation_industry_employ_landing_raw\n    WHERE sex_code IS NOT NULL\n        AND generation IS NOT NULL\n        AND year IS NOT NULL\n)\nMERGE INTO laborforce_generation_industry_employ_curated AS tgt\nUSING src\n    ON tgt.sex_code = src.sex_code\n    AND tgt.generation_code = src.generation\n    AND tgt.year = src.year\n\nWHEN MATCHED THEN\n    UPDATE SET\n        tgt.sex_code = src.sex_code,\n        tgt.generation_code = src.generation,\n        tgt.year = src.year,\n        tgt.job_1 = src.job_1,\n        tgt.job_2 = src.job_2,\n        tgt.job_3 = src.job_3,\n        tgt.job_4 = src.job_4,\n        tgt.job_5 = src.job_5,\n        tgt.job_6 = src.job_6,\n        tgt.job_7 = src.job_7,\n        tgt.job_8 = src.job_8,\n        tgt.job_9 = src.job_9,\n        tgt.job_10 = src.job_10,\n        tgt.job_11 = src.job_11,\n        tgt.job_12 = src.job_12,\n        tgt.job_13 = src.job_13,\n        tgt.job_14 = src.job_14,\n        tgt.job_15 = src.job_15,\n        tgt.job_16 = src.job_16,\n        tgt.job_17 = src.job_17,\n        tgt.job_18 = src.job_18,\n        tgt.job_19 = src.job_19,\n        tgt.job_20 = src.job_20,\n        tgt.job_21 = src.job_21,\n        tgt.job_22 = src.job_22,\n        tgt.job_23 = src.job_23,\n        tgt.job_24 = src.job_24,\n        tgt.job_25 = src.job_25,\n        tgt.job_26 = src.job_26,\n        tgt.job_27 = src.job_27,\n        tgt.job_28 = src.job_28,\n        tgt.job_29 = src.job_29,\n        tgt.job_30 = src.job_30,\n        tgt.job_31 = src.job_31,\n        tgt.job_32 = src.job_32,\n        tgt.job_33 = src.job_33,\n        tgt.job_34 = src.job_34,\n        tgt.job_35 = src.job_35,\n        tgt.job_36 = src.job_36,\n        tgt.job_37 = src.job_37,\n        tgt.job_38 = src.job_38,\n        tgt.job_39 = src.job_39,\n        tgt.job_40 = src.job_40,\n        tgt.job_41 = src.job_41,\n        tgt.job_42 = src.job_42,\n        tgt.job_43 = src.job_43,\n        tgt.job_44 = src.job_44,\n        tgt.job_45 = src.job_45,\n        tgt.job_46 = src.job_46,\n        tgt.job_47 = src.job_47,\n        tgt.job_48 = src.job_48,\n        tgt.job_49 = src.job_49,\n        tgt.job_50 = src.job_50,\n        tgt.job_51 = src.job_51,\n        tgt.job_52 = src.job_52,\n        tgt.job_53 = src.job_53,\n        tgt.job_54 = src.job_54,\n        tgt.job_55 = src.job_55,\n        tgt.job_56 = src.job_56,\n        tgt.job_57 = src.job_57,\n        tgt.job_58 = src.job_58,\n        tgt.job_59 = src.job_59,\n        tgt.job_60 = src.job_60,\n        tgt.job_61 = src.job_61,\n        tgt.job_62 = src.job_62,\n        tgt.job_63 = src.job_63,\n        tgt.job_64 = src.job_64,\n        tgt.job_65 = src.job_65,\n        tgt.job_66 = src.job_66,\n        tgt.job_67 = src.job_67,\n        tgt.job_68 = src.job_68,\n        tgt.job_69 = src.job_69,\n        tgt.job_70 = src.job_70,\n        tgt.job_71 = src.job_71,\n        tgt.job_72 = src.job_72,\n        tgt.job_73 = src.job_73,\n        tgt.job_74 = src.job_74,\n        tgt.job_75 = src.job_75,\n        tgt.job_76 = src.job_76,\n        tgt.job_77 = src.job_77,\n        tgt.job_78 = src.job_78,\n        tgt.job_79 = src.job_79,\n        tgt.job_80 = src.job_80,\n        tgt.job_81 = src.job_81,\n        tgt.job_82 = src.job_82,\n        tgt.job_83 = src.job_83,\n        tgt.job_84 = src.job_84,\n        tgt.job_85 = src.job_85,\n        tgt.job_86 = src.job_86,\n        tgt.job_87 = src.job_87,\n        tgt.job_88 = src.job_88,\n        tgt.job_89 = src.job_89,\n        tgt.job_90 = src.job_90,\n        tgt.job_91 = src.job_91,\n        tgt.job_92 = src.job_92,\n        tgt.job_93 = src.job_93,\n        tgt.job_94 = src.job_94,\n        tgt.job_95 = src.job_95,\n        tgt.job_96 = src.job_96,\n        tgt.job_97 = src.job_97,\n        tgt.job_98 = src.job_98,\n        tgt.job_99 = src.job_99,\n        tgt.updated_at = GETDATE()\n\nWHEN NOT MATCHED THEN\n    INSERT (\n        sex_code,\n        generation_code,\n        year,\n        job_1,\n        job_2,\n        job_3,\n        job_4,\n        job_5,\n        job_6,\n        job_7,\n        job_8,\n        job_9,\n        job_10,\n        job_11,\n        job_12,\n        job_13,\n        job_14,\n        job_15,\n        job_16,\n        job_17,\n        job_18,\n        job_19,\n        job_20,\n        job_21,\n        job_22,\n        job_23,\n        job_24,\n        job_25,\n        job_26,\n        job_27,\n        job_28,\n        job_29,\n        job_30,\n        job_31,\n        job_32,\n        job_33,\n        job_34,\n        job_35,\n        job_36,\n        job_37,\n        job_38,\n        job_39,\n        job_40,\n        job_41,\n        job_42,\n        job_43,\n        job_44,\n        job_45,\n        job_46,\n        job_47,\n        job_48,\n        job_49,\n        job_50,\n        job_51,\n        job_52,\n        job_53,\n        job_54,\n        job_55,\n        job_56,\n        job_57,\n        job_58,\n        job_59,\n        job_60,\n        job_61,\n        job_62,\n        job_63,\n        job_64,\n        job_65,\n        job_66,\n        job_67,\n        job_68,\n        job_69,\n        job_70,\n        job_71,\n        job_72,\n        job_73,\n        job_74,\n        job_75,\n        job_76,\n        job_77,\n        job_78,\n        job_79,\n        job_80,\n        job_81,\n        job_82,\n        job_83,\n        job_84,\n        job_85,\n        job_86,\n        job_87,\n        job_88,\n        job_89,\n        job_90,\n        job_91,\n        job_92,\n        job_93,\n        job_94,\n        job_95,\n        job_96,\n        job_97,\n        job_98,\n        job_99,\n        updated_at\n    )\n    VALUES (\n        src.sex_code,\n        src.generation,\n        src.year,\n        src.job_1,\n        src.job_2,\n        src.job_3,\n        src.job_4,\n        src.job_5,\n        src.job_6,\n        src.job_7,\n        src.job_8,\n        src.job_9,\n        src.job_10,\n        src.job_11,\n        src.job_12,\n        src.job_13,\n        src.job_14,\n        src.job_15,\n        src.job_16,\n        src.job_17,\n        src.job_18,\n        src.job_19,\n        src.job_20,\n        src.job_21,\n        src.job_22,\n        src.job_23,\n        src.job_24,\n        src.job_25,\n        src.job_26,\n        src.job_27,\n        src.job_28,\n        src.job_29,\n        src.job_30,\n        src.job_31,\n        src.job_32,\n        src.job_33,\n        src.job_34,\n        src.job_35,\n        src.job_36,\n        src.job_37,\n        src.job_38,\n        src.job_39,\n        src.job_40,\n        src.job_41,\n        src.job_42,\n        src.job_43,\n        src.job_44,\n        src.job_45,\n        src.job_46,\n        src.job_47,\n        src.job_48,\n        src.job_49,\n        src.job_50,\n        src.job_51,\n        src.job_52,\n        src.job_53,\n        src.job_54,\n        src.job_55,\n        src.job_56,\n        src.job_57,\n        src.job_58,\n        src.job_59,\n        src.job_60,\n        src.job_61,\n        src.job_62,\n        src.job_63,\n        src.job_64,\n        src.job_65,\n        src.job_66,\n        src.job_67,\n        src.job_68,\n        src.job_69,\n        src.job_70,\n        src.job_71,\n        src.job_72,\n        src.job_73,\n        src.job_74,\n        src.job_75,\n        src.job_76,\n        src.job_77,\n        src.job_78,\n        src.job_79,\n        src.job_80,\n        src.job_81,\n        src.job_82,\n        src.job_83,\n        src.job_84,\n        src.job_85,\n        src.job_86,\n        src.job_87,\n        src.job_88,\n        src.job_89,\n        src.job_90,\n        src.job_91,\n        src.job_92,\n        src.job_93,\n        src.job_94,\n        src.job_95,\n        src.job_96,\n        src.job_97,\n        src.job_98,\n        src.job_99,\n        GETDATE()\n    );\n\n-- 不要になったlanding_rawテーブルを削除\nDROP TABLE laborforce_generation_industry_employ_landing_raw"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-20T01:39:18Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

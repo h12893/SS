@@ -1,0 +1,32 @@
+{
+    "name": "encode_raw_laborforce_generation_industry_employ_code",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_dbmake2026datalake",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "laborforce_generation_industry_employ_code.csv",
+                "folderPath": "government-statistical/job/コード値",
+                "fileSystem": "raw-data"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": false,
+            "quoteChar": "\""
+        },
+        "schema": [
+            {
+                "type": "String"
+            },
+            {
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

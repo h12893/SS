@@ -1,0 +1,26 @@
+{
+    "name": "encode_raw_laborforce_generation_industry_employ",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_dbmake2026datalake",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "労働力調査_年齢階級別_産業別_就業者数.csv",
+                "folderPath": "government-statistical/job/「労働力調査」（総務省）",
+                "fileSystem": "raw-data"
+            },
+            "columnDelimiter": ",",
+            "encodingName": "SHIFT-JIS",
+            "escapeChar": "\\",
+            "firstRowAsHeader": false,
+            "quoteChar": "\""
+        },
+        "schema": []
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
