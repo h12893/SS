@@ -1,0 +1,478 @@
+{
+    "name": "load_SQL_laborforce_generation_industry_employ",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "column_A",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_B",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_C",
+                "type": "nvarchar"
+            },
+            {
+                "name": "sex_code",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_E",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_F",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_G",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_H",
+                "type": "nvarchar"
+            },
+            {
+                "name": "generation",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_J",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_K",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_L",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_M",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_N",
+                "type": "nvarchar"
+            },
+            {
+                "name": "year",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_P",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_1",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_2",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_3",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_4",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_5",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_6",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_7",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_8",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_9",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_10",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_11",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_12",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_13",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_14",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_15",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_16",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_17",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_18",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_19",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_20",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_21",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_22",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_23",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_24",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_25",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_26",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_27",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_28",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_29",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_30",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_31",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_32",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_33",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_34",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_35",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_36",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_37",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_38",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_39",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_40",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_41",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_42",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_43",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_44",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_45",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_46",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_47",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_48",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_49",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_50",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_51",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_52",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_53",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_54",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_55",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_56",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_57",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_58",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_59",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_60",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_61",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_62",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_63",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_64",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_65",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_66",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_67",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_68",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_69",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_70",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_71",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_72",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_73",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_74",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_75",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_76",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_77",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_78",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_79",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_80",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_81",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_82",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_83",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_84",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_85",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_86",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_87",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_88",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_89",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_90",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_91",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_92",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_93",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_94",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_95",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_96",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_97",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_98",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_99",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "laborforce_generation_industry_employ_landing_raw"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

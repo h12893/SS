@@ -1,0 +1,27 @@
+{
+    "name": "load_SQL_laborforce_generation_industry_employ_code",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "job_code",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "job_name",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "laborforce_generation_industry_employ_code"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
