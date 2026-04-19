@@ -35,6 +35,19 @@
             - encode_raw_active_job_seekings_2023_2024_all.json
             - encode_raw_active_job_seekings_2023_2024_o65.json
             - encode_raw_active_job_seekings_2023_2024_u19.json
+            - encode_raw_economic_census_2012_employments_1.json
+            - encode_raw_economic_census_2012_employments_2.json
+            - encode_raw_economic_census_2012_employments_3.json
+            - encode_raw_economic_census_2012_employments_4.json
+            - encode_raw_economic_census_2012_employments_5.json
+            - encode_raw_economic_census_2016_employments_1.json
+            - encode_raw_economic_census_2016_employments_2.json
+            - encode_raw_economic_census_2016_employments_3.json
+            - encode_raw_economic_census_2016_employments_4.json
+            - encode_raw_economic_census_2016_employments_5.json
+            - encode_raw_economic_census_2021_employments_1.json
+            - encode_raw_economic_census_2021_employments_2.json
+            - encode_raw_economic_census_code.json
             - encode_raw_employments_2012_2022.json
             - encode_raw_employments_2023_2024.json
             - encode_raw_generation_code.json
@@ -59,6 +72,9 @@
             - load_SQL_active_job_seekings_2023_2024_f.json
             - load_SQL_active_job_seekings_2023_2024_m.json
             - load_SQL_active_job_seekings_2023_2024_t.json
+            - load_SQL_economic_census_2012_2016_employments.json
+            - load_SQL_economic_census_2021_employments.json
+            - load_SQL_economic_census_code.json
             - load_SQL_employments_2012_2022.json
             - load_SQL_employments_2023_2024.json
             - load_SQL_generation_metadata.json
@@ -99,6 +115,10 @@
             - PL_active_job_seekings_2023-2024_o65.json
             - PL_active_job_seekings_2023-2024_u19.json
             - PL_demogra_metadata_codes.json
+            - PL_economic_census_2012_employments.json
+            - PL_economic_census_2016_employments.json
+            - PL_economic_census_2021_employments.json
+            - PL_economic_census_codes.json
             - PL_employments_2012-2022.json
             - PL_employments_2023-2024.json
             - PL_laborforce_generation_industry_employ.json
@@ -147,6 +167,22 @@
                 - MergeLandingToCurated.sql
                 - UnionLanding.sql
                 - UnpivotLandingRaw.sql
+        - /economic_census
+            - /employments_2012
+                - CreateCuratedTable.sql
+                - CreateLandingRawTable.sql
+                - DropLandingRaw.sql
+                - PreprocesInsertLandingRawIntoCurated_X(X=1~5).sql
+            - /employments_2016
+                - CreateCuratedTable.sql
+                - CreateLandingRawTable.sql
+                - DropLandingRaw.sql
+                - PreprocesInsertLandingRawIntoCurated_X(X=1~5).sql
+            - /employments_2021
+                - CreateCuratedTable.sql
+                - CreateLandingRawTable.sql
+                - DropLandingRaw.sql
+                - PreprocesInsertLandingRawIntoCurated_X(X=1~2).sql
         - /employments
             - /2012-2022
                 - CreateCuratedTableIfNotExists.sql
@@ -171,6 +207,9 @@
                 - CleanJobName.sql
                 - CreateMetadataCodes.sql
             - /demogra_metadata_codes
+                - CreateMetadataCodes.sql
+            - /economic_census_codes
+                - CleanJobName.sql
                 - CreateMetadataCodes.sql
             - /laborforce_generation_industry_employ
                 - CleanJobName.sql

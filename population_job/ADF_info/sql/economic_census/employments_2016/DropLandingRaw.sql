@@ -1,0 +1,1 @@
+DROP TABLE economic_census_employments_landing_raw

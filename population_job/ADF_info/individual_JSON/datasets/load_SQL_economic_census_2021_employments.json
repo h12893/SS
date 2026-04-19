@@ -1,0 +1,98 @@
+{
+    "name": "load_SQL_economic_census_2021_employments",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "column_1",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_2",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_3",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_4",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_5",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_6",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_7",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_8",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_9",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_10",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_11",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_12",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_13",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_14",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_15",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_16",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_17",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_18",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_19",
+                "type": "nvarchar"
+            },
+            {
+                "name": "column_20",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "economic_census_employments_landing_raw"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,26 @@
+{
+    "name": "encode_raw_economic_census_2016_employments_2",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_dbmake2026datalake",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "経済センサス_産業_雇用者数_都道府県_2016年_2.csv",
+                "folderPath": "government-statistical/job/「経済センサス」（総務省・経済産業省）",
+                "fileSystem": "raw-data"
+            },
+            "columnDelimiter": ",",
+            "encodingName": "SHIFT-JIS",
+            "escapeChar": "\\",
+            "firstRowAsHeader": false,
+            "quoteChar": "\""
+        },
+        "schema": []
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

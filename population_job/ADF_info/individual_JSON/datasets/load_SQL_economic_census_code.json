@@ -1,0 +1,35 @@
+{
+    "name": "load_SQL_economic_census_code",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "Connect_population_dynamics_prefecture",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "job_code",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "job_name_2012",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_name_2016",
+                "type": "nvarchar"
+            },
+            {
+                "name": "job_name_2021",
+                "type": "nvarchar"
+            }
+        ],
+        "typeProperties": {
+            "schema": "dbo",
+            "table": "economic_census_code"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

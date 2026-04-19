@@ -1,0 +1,176 @@
+{
+    "name": "PL_economic_census_codes",
+    "properties": {
+        "activities": [
+            {
+                "name": "CreateMetadataCodes",
+                "type": "Script",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'economic_census_code'\n)\nBEGIN\n    DROP TABLE economic_census_code\nEND;\n\nCREATE TABLE economic_census_code(\n        job_code INT NOT NULL PRIMARY KEY,\n        job_name_2012 NVARCHAR(200) NOT NULL,\n        job_name_2016 NVARCHAR(200) NOT NULL,\n        job_name_2021 NVARCHAR(200) NOT NULL,\n);"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "CleanJobName",
+                "description": "",
+                "type": "Script",
+                "dependsOn": [
+                    {
+                        "activity": "RawToMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "linkedServiceName": {
+                    "referenceName": "Connect_population_dynamics_prefecture",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "scripts": [
+                        {
+                            "type": "Query",
+                            "text": "-- job_name_2012内の空白削除\nUPDATE economic_census_code\nSET job_name_2012 = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name_2012))\n\n-- job_name_2016内の空白削除\nUPDATE economic_census_code\nSET job_name_2016 = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name_2016))\n\n-- job_name_2021内の空白削除\nUPDATE economic_census_code\nSET job_name_2021 = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name_2021))"
+                        }
+                    ],
+                    "scriptBlockExecutionTimeout": "02:00:00"
+                }
+            },
+            {
+                "name": "RawToMetadataCodes",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "CreateMetadataCodes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings",
+                            "skipLineCount": 0
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 1
+                                },
+                                "sink": {
+                                    "name": "job_code",
+                                    "type": "Int32",
+                                    "physicalType": "int"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 2
+                                },
+                                "sink": {
+                                    "name": "job_name_2012",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 3
+                                },
+                                "sink": {
+                                    "name": "job_name_2016",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "type": "String",
+                                    "ordinal": 4
+                                },
+                                "sink": {
+                                    "name": "job_name_2021",
+                                    "type": "String",
+                                    "physicalType": "nvarchar"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "encode_raw_economic_census_code",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "load_SQL_economic_census_code",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-03-30T00:54:44Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
