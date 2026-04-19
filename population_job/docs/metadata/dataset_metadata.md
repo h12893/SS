@@ -241,7 +241,8 @@ population-dynamics-prefecture.dbo.economic_census_employments_curated
 - economic_census_code
 - prefecture_metadata_codes
 ### 補足
-都道府県のコード値と内容の対応に関してはprefecture_metadata_codesを流用  
+1. 都道府県のコード値と内容の対応に関してはprefecture_metadata_codesを流用  
+2. 全体のレコード数が膨大になることを避けるために、産業は「全産業（Ｓ公務を除く）```（コード値 = 2）```」と「情報通信業系```（コード値 = 51 ~ 58）```に限定して取得。
 
 ----------------------------------------------------------------------------------------------------
 
