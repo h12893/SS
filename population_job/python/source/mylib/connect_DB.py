@@ -1,8 +1,10 @@
 import pandas as pd
 import pyodbc
+from pathlib import Path
 
 # データベースへの接続文字列をconfigファイルから読み込む。
-with open('connect_DB.config', 'r') as f:
+config_path = Path(__file__).resolve().parents[2] / 'config' / 'connect_DB.config'
+with open(config_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 connection_string = ''.join(line.strip() for line in lines if not line.strip().startswith('#')).strip()
 conn = pyodbc.connect(connection_string)

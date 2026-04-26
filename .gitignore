@@ -17,11 +17,13 @@
 
 # ========== python ==========
 # pythonでのSQL Databaseへの接続情報
-/population_job/python/connect_DB.config
+/population_job/python/config/connect_DB.config
 # pythonの仮想環境フォルダ
 /population_job/python/.venv
 # pythonのpycache（キャッシュファイル）
 /population_job/python/__pycache__
+# pythonの出力ファイル（グラフなど）
+/population_job/python/output/img/*
 
 # ========== raw_data ==========
 # 生データ
