@@ -1,5 +1,5 @@
 {
-    "name": "encode_raw_laborforce_generation_industry_employ_code",
+    "name": "encode_raw_laborforce_generation_industry_employ_codes",
     "properties": {
         "linkedServiceName": {
             "referenceName": "Connect_dbmake2026datalake",

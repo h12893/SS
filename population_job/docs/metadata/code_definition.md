@@ -202,9 +202,9 @@
 
 ----------------------------------------------------------------------------------------------------
 
-# generation_metadata_codes
+# laborforce_generation_industry_employ_codes
 
-| job_code | job_name |
+| industry_code | industry_name |
 |----------|----------|
 | 1 | 全産業 |
 | 2 | 農業，林業 |

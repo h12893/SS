@@ -24,6 +24,8 @@
 **/__pycache__/
 # pythonの出力ファイル（グラフなど）
 /population_job/python/output/img/*
+# pythonの出力ファイル（CSVなど）
+/population_job/python/data/*
 
 # ========== raw_data ==========
 # 生データ

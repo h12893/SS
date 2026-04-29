@@ -1,5 +1,5 @@
 {
-    "name": "load_SQL_laborforce_generation_industry_employ_code",
+    "name": "load_SQL_laborforce_generation_industry_employ_codes",
     "properties": {
         "linkedServiceName": {
             "referenceName": "Connect_population_dynamics_prefecture",
@@ -9,18 +9,18 @@
         "type": "AzureSqlTable",
         "schema": [
             {
-                "name": "job_code",
+                "name": "industry_code",
                 "type": "int",
                 "precision": 10
             },
             {
-                "name": "job_name",
+                "name": "industry_name",
                 "type": "nvarchar"
             }
         ],
         "typeProperties": {
             "schema": "dbo",
-            "table": "laborforce_generation_industry_employ_code"
+            "table": "laborforce_generation_industry_employ_codes"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"
