@@ -1,38 +1,65 @@
 import matplotlib.pyplot as plt
 import japanize_matplotlib 
 japanize_matplotlib.japanize()
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 
+
 # 散布図
-def make_scatter_plot(x_dict, y_dict, x_lim='', y_lim='', title='', xlabel='', ylabel='', path=None):
+def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
     '''
     散布図を作図し、コンソールに表示 or 指定したパスに保存。
+    【引数】
     x_dict[dict]: x軸のデータを格納した辞書。keyは特に意味は無し、valueはx軸のデータ。
     y_dict[dict]: y軸のデータを格納した辞書。keyは凡例、valueはy軸のデータ。
-    x_lim[tuple]: x軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
-    y_lim[tuple]: y軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
+    x_integer[bool]: x軸の目盛りを整数に設定するかどうか。指定しない場合は自動で設定。
+    y_integer[bool]: y軸の目盛りを整数に設定するかどうか。指定しない場合は自動で設定。
+    x_lim[tuple]: x軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
+    y_lim[tuple]: y軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
     title[str]: グラフのタイトル。指定しない場合は空白。
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
+    legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     '''
 
+    fig, ax = plt.subplots()
+
     # x_dictとy_dictのkeyをzipで同時にループさせて、複数要素の散布図を1枚のグラフ内に描画。
     for key_x, key_y in zip(x_dict, y_dict):
-        plt.scatter(x_dict[key_x], y_dict[key_y], label=key_y)
+        ax.scatter(x_dict[key_x], y_dict[key_y], label=key_y)
     
     # グラフのタイトル、軸ラベル、範囲を設定。凡例も表示。
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.legend()
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    if legend_bottom:
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+    else:
+        plt.legend(fontsize=8)
 
-    # x_limとy_limが空でない場合は、グラフの範囲を設定。
-    if x_lim != '':
-        plt.xlim(x_lim[0], x_lim[1])
-    if y_lim != '':
-        plt.ylim(y_lim[0], y_lim[1])
+    # x_limとy_limがNoneでない場合は、グラフの範囲を設定。
+    if x_lim is not None:
+        ax.set_xlim(x_lim[0], x_lim[1])
+    if y_lim is not None:
+        ax.set_ylim(y_lim[0], y_lim[1])
+
+    if x_integer:
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    if y_integer:
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # グリッドを表示。グリッドのスタイルは、線の色を灰色、線のスタイルを点線、線の太さを0.7、透明度を0.7に設定。
+    plt.grid(
+        True,                # グリッド表示
+        which='both',        # 'major', 'minor', 'both'
+        axis='both',         # 'x', 'y', 'both'
+        color='gray',        # 線の色
+        linestyle='--',      # '--', '-.', ':', '-'
+        linewidth=0.7,       # 線の太さ
+        alpha=0.7            # 透明度
+    )
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
@@ -44,33 +71,58 @@ def make_scatter_plot(x_dict, y_dict, x_lim='', y_lim='', title='', xlabel='', y
 
 
 # 折れ線グラフ
-def make_line_plot(x_dict, y_dict, x_lim='', y_lim='', title='', xlabel='', ylabel='', path=None):
+def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
     '''
     折れ線グラフを作図し、コンソールに表示 or 指定したパスに保存。
+    【引数】
     x_dict[dict]: x軸のデータを格納した辞書。keyは特に意味は無し、valueはx軸のデータ。
     y_dict[dict]: y軸のデータを格納した辞書。keyは凡例、valueはy軸のデータ。
-    x_lim[tuple]: x軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
-    y_lim[tuple]: y軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
+    x_integer[bool]: x軸の目盛りを整数に設定するかどうか。指定しない場合は自動で設定。
+    y_integer[bool]: y軸の目盛りを整数に設定するかどうか。指定しない場合は自動で設定。
+    x_lim[tuple]: x軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
+    y_lim[tuple]: y軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
     title[str]: グラフのタイトル。指定しない場合は空白。
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
+    legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。'''
+
+    fig, ax = plt.subplots()
 
     # x_dictとy_dictのkeyをzipで同時にループさせて、複数要素の折れ線グラフを1枚のグラフ内に描画。
     for key_x, key_y in zip(x_dict, y_dict):
-        plt.plot(x_dict[key_x], y_dict[key_y], label=key_y)
+        ax.plot(x_dict[key_x], y_dict[key_y], label=key_y, marker='o')
 
     # グラフのタイトル、軸ラベル、範囲を設定。凡例も表示。
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.legend()
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    if legend_bottom:
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+    else:
+        plt.legend(fontsize=8)
 
-    # x_limとy_limが空でない場合は、グラフの範囲を設定。
-    if x_lim != '':
-        plt.xlim(x_lim[0], x_lim[1])
-    if y_lim != '':
-        plt.ylim(y_lim[0], y_lim[1])
+    # x_limとy_limがNoneでない場合は、グラフの範囲を設定。
+    if x_lim is not None:
+        ax.set_xlim(x_lim[0], x_lim[1])
+    if y_lim is not None:
+        ax.set_ylim(y_lim[0], y_lim[1])
+
+    if x_integer:
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    if y_integer:
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # グリッドを表示。グリッドのスタイルは、線の色を灰色、線のスタイルを点線、線の太さを0.7、透明度を0.7に設定。
+    plt.grid(
+        True,                # グリッド表示
+        which='both',        # 'major', 'minor', 'both'
+        axis='both',         # 'x', 'y', 'both'
+        color='gray',        # 線の色
+        linestyle='--',      # '--', '-.', ':', '-'
+        linewidth=0.7,       # 線の太さ
+        alpha=0.7            # 透明度
+    )
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
@@ -82,24 +134,26 @@ def make_line_plot(x_dict, y_dict, x_lim='', y_lim='', title='', xlabel='', ylab
 
 
 # 棒グラフ
-def make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', path=None):
+def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
     '''
     棒グラフを作図し、コンソールに表示 or 指定したパスに保存。
+    【引数】
     x[list]: x軸のデータを格納したリスト。
     y_dict[dict]: y軸のデータを格納した辞書。keyは凡例、valueはy軸のデータ。
     title[str]: グラフのタイトル。指定しない場合は空白。
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
+    legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     '''
+
+    fig, ax = plt.subplots()
 
     # xの要素数に基づいてx軸の位置を設定。y_dictの要素数に基づいて棒の幅を設定。
     x_point = np.arange(len(x))  # X軸の位置
     group_num = len(y_dict)  # グループ数
     blank = 0.15  # 棒と棒の間のスペース
     width = (1.0-2*blank) / group_num  # 棒の幅
-
-    fig, ax = plt.subplots()
 
     # y_dictのkeyをループさせて、複数要素の棒グラフを1枚のグラフ内に描画。rectsは棒のオブジェクトを格納する辞書。
     rects = {}
@@ -118,10 +172,24 @@ def make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', path=None):
                     ha='center', va='bottom')
 
     # グラフのタイトル、軸ラベルを設定。凡例も表示。
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.legend()
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    if legend_bottom:
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+    else:
+        plt.legend(fontsize=8)
+
+    # グリッドを表示。グリッドのスタイルは、線の色を灰色、線のスタイルを点線、線の太さを0.7、透明度を0.7に設定。
+    plt.grid(
+        True,                # グリッド表示
+        which='both',        # 'major', 'minor', 'both'
+        axis='y',            # 'x', 'y', 'both'
+        color='gray',        # 線の色
+        linestyle='--',      # '--', '-.', ':', '-'
+        linewidth=0.7,       # 線の太さ
+        alpha=0.7            # 透明度
+    )
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
@@ -133,14 +201,16 @@ def make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', path=None):
 
 
 # ヒストグラム
-def make_hist_plot(x_dict, title='', x_lim='', y_lim='', x_label='', path=None, bin_width=None, bins=None, alpha=0.4, density=False, normed=False):
+def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_bottom=False, path=None, bin_width=None, bins=None, alpha=0.4, density=False, normed=False):
     '''
     ヒストグラムを作図し、コンソールに表示 or 指定したパスに保存。
+    【引数】
     x_dict[dict]: ヒストグラムのデータを格納した辞書。keyは凡例、valueはヒストグラムのデータ。
     title[str]: グラフのタイトル。指定しない場合は空白。
-    x_lim[tuple]: x軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
-    y_lim[tuple]: y軸の範囲を指定するタプル。例：(0, 100)。指定しない場合は自動で設定。
+    x_lim[tuple]: x軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
+    y_lim[tuple]: y軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
     x_label[str]: x軸のラベル。指定しない場合は空白。
+    legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     bin_width[int]: ヒストグラムのビンの幅。指定しない場合は自動でビンの数を設定。
     bins[int or list]: ヒストグラムのビンの数またはビンのエッジを指定するリスト。bin_widthが指定されている場合は無視される。指定しない場合は自動でビンの数を設定。
@@ -180,14 +250,28 @@ def make_hist_plot(x_dict, title='', x_lim='', y_lim='', x_label='', path=None, 
     # グラフのタイトル、軸ラベルを設定。凡例も表示。
     plt.title(title)
     plt.xlabel(x_label)
-    plt.legend()
+    if legend_bottom:
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+    else:
+        plt.legend(fontsize=8)
 
-    # x_limとy_limが空でない場合は、グラフの範囲を設定。
-    if x_lim != '':
+    # x_limとy_limがNoneでない場合は、グラフの範囲を設定。
+    if x_lim is not None:
         plt.xlim(x_lim[0], x_lim[1])
-    if y_lim != '':
+    if y_lim is not None:
         plt.ylim(y_lim[0], y_lim[1])
-    
+
+    # グリッドを表示。グリッドのスタイルは、線の色を灰色、線のスタイルを点線、線の太さを0.7、透明度を0.7に設定。
+    plt.grid(
+        True,                # グリッド表示
+        which='both',        # 'major', 'minor', 'both'
+        axis='y',            # 'x', 'y', 'both'
+        color='gray',        # 線の色
+        linestyle='--',      # '--', '-.', ':', '-'
+        linewidth=0.7,       # 線の太さ
+        alpha=0.7            # 透明度
+    )
+
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
         plt.show()
