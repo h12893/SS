@@ -22,7 +22,7 @@
                     "scripts": [
                         {
                             "type": "Query",
-                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'laborforce_generation_industry_employ_code'\n)\nBEGIN\n    DROP TABLE laborforce_generation_industry_employ_code\nEND;\n\nCREATE TABLE laborforce_generation_industry_employ_code (\n    job_code INT NOT NULL PRIMARY KEY,\n    job_name NVARCHAR(200) NOT NULL,   \n);"
+                            "text": "IF EXISTS (\n    SELECT 1\n    FROM sys.tables\n    WHERE name = 'laborforce_generation_industry_employ_codes'\n)\nBEGIN\n    DROP TABLE laborforce_generation_industry_employ_codes\nEND;\n\nCREATE TABLE laborforce_generation_industry_employ_codes (\n    industry_code INT NOT NULL PRIMARY KEY,\n    industry_name NVARCHAR(200) NOT NULL,   \n);"
                         }
                     ],
                     "scriptBlockExecutionTimeout": "02:00:00"
@@ -56,7 +56,7 @@
                     "scripts": [
                         {
                             "type": "Query",
-                            "text": "-- job_name内の空白削除\nUPDATE laborforce_generation_industry_employ_code\nSET job_name = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM job_name))"
+                            "text": "-- industry_name内の空白削除\nUPDATE laborforce_generation_industry_employ_codes\nSET industry_name = TRIM(BOTH ' ' FROM TRIM(BOTH '　' FROM industry_name))"
                         }
                     ],
                     "scriptBlockExecutionTimeout": "02:00:00"
@@ -94,15 +94,9 @@
                         }
                     },
                     "sink": {
-                        "type": "DelimitedTextSink",
-                        "storeSettings": {
-                            "type": "AzureBlobFSWriteSettings"
-                        },
-                        "formatSettings": {
-                            "type": "DelimitedTextWriteSettings",
-                            "quoteAllText": true,
-                            "fileExtension": ".txt"
-                        }
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
                     },
                     "enableStaging": false,
                     "translator": {
@@ -114,9 +108,9 @@
                                     "ordinal": 1
                                 },
                                 "sink": {
-                                    "type": "String",
-                                    "physicalType": "String",
-                                    "ordinal": 1
+                                    "name": "industry_code",
+                                    "type": "Int32",
+                                    "physicalType": "int"
                                 }
                             },
                             {
@@ -125,9 +119,9 @@
                                     "ordinal": 2
                                 },
                                 "sink": {
+                                    "name": "industry_name",
                                     "type": "String",
-                                    "physicalType": "String",
-                                    "ordinal": 2
+                                    "physicalType": "nvarchar"
                                 }
                             }
                         ],
@@ -140,13 +134,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "encode_raw_laborforce_generation_industry_employ_code",
+                        "referenceName": "encode_raw_laborforce_generation_industry_employ_codes",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "encode_raw_laborforce_generation_industry_employ_code",
+                        "referenceName": "load_SQL_laborforce_generation_industry_employ_codes",
                         "type": "DatasetReference"
                     }
                 ]

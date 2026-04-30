@@ -52,7 +52,7 @@
             - encode_raw_employments_2023_2024.json
             - encode_raw_generation_code.json
             - encode_raw_laborforce_generation_industry_employ.json
-            - encode_raw_laborforce_generation_industry_employ_code.json
+            - encode_raw_laborforce_generation_industry_employ_codes.json
             - encode_raw_population_2016.json
             - encode_raw_population_2017.json
             - encode_raw_population_2018.json
@@ -80,7 +80,7 @@
             - load_SQL_generation_metadata.json
             - load_SQL_generation_metadata.json
             - load_SQL_laborforce_generation_industry_employ.json
-            - load_SQL_laborforce_generation_industry_employ_code.json
+            - load_SQL_laborforce_generation_industry_employ_codes.json
             - load_SQL_sex_metadata.json
         - /linkedServices（git管理対象外）
             - AzureBlobStorage1.json
