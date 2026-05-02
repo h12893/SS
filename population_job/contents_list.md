@@ -5,6 +5,7 @@
         - 20260330.zip
         - 20260405.zip
         - 20260417.zip
+        - 20260502.zip
         - ARMテンプレート内容一覧.md
     - /individual_JSON
         - /datasets
@@ -53,6 +54,10 @@
             - encode_raw_generation_code.json
             - encode_raw_laborforce_generation_industry_employ.json
             - encode_raw_laborforce_generation_industry_employ_codes.json
+            - encode_raw_population_2012.json
+            - encode_raw_population_2013.json
+            - encode_raw_population_2014.json
+            - encode_raw_population_2015.json
             - encode_raw_population_2016.json
             - encode_raw_population_2017.json
             - encode_raw_population_2018.json
@@ -123,6 +128,10 @@
             - PL_employments_2023-2024.json
             - PL_laborforce_generation_industry_employ.json
             - PL_laborforce_generation_industry_employ_codes.json
+            - PL_population_2012.json
+            - PL_population_2013.json
+            - PL_population_2014.json
+            - PL_population_2015.json
             - PL_population_2016.json
             - PL_population_2017.json
             - PL_population_2018.json
@@ -258,6 +267,30 @@
             - 2024_Population_Ratio_map_mid.png
     - connect_setting.md（git管理対象外）
     - DAX_query.md
+- /python
+    - .venv/（git管理対象外、仮想環境用ディレクトリで格納内容は省略）
+    - \__pycache__/（git管理対象外、pythonのキャッシュディレクトリで格納内容は省略）
+    - config/
+        - connect_DB.config（git管理対象外）
+    - data/（git管理対象外、処理途中のデータ保管ディレクトリで内容は省略）
+    - notebook/
+        - analysis.ipynb
+    - output/
+        - img/（git管理対象外、処理結果の画像ファイル格納ディレクトリで内容は省略）
+    - source/
+        - \__pycache__/（git管理対象外、pythonのキャッシュディレクトリで格納内容は省略）
+        - mylib/
+            - \__pycache__/（git管理対象外、pythonのキャッシュディレクトリで格納内容は省略）
+            - \__init__.py
+            - ConnectDB.py
+            - CreateVariableDataFrame.py
+            - ExtractDataFrame.py
+            - MakeOutput.py
+            - Preprocessing.py
+            - ReadWriteData.py
+        - \__init__.py
+    - folder_explain.md
+    -requirements.txt
 - /raw_data（git管理対象外）
     - /job
         - /「経済センサス」（総務省・経済産業省）
@@ -307,6 +340,10 @@
             - 有効求人数-新規求人数-就職件数_一般_都道府県別_2011~2024.xlsx
     - /population
         - /「人口動向調査」（厚生労働省）
+        - 人口動態_都道府県_2012.csv
+        - 人口動態_都道府県_2013.csv
+        - 人口動態_都道府県_2014.csv
+        - 人口動態_都道府県_2015.csv
         - 人口動態_都道府県_2016.csv
         - 人口動態_都道府県_2017.csv
         - 人口動態_都道府県_2018.csv
