@@ -24,6 +24,8 @@
 **/__pycache__/
 # pythonの出力ファイル（グラフなど）
 /population_job/python/output/img/*
+# pythonの出力ファイル（データフレームなど）
+/population_job/python/output/csv/*
 # pythonの出力ファイル（CSVなど）
 /population_job/python/data/*
 
