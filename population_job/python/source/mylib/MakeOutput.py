@@ -7,7 +7,7 @@ import numpy as np
 
 
 # 散布図
-def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
+def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, ncol=2, path=None):
     '''
     散布図を作図し、コンソールに表示 or 指定したパスに保存。
     【引数】
@@ -21,6 +21,7 @@ def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=No
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
     legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
+    ncol[int]:凡例をグラフの下部に表示する場合の1行当たりの凡例件数。指定しない場合は2で設定。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     '''
 
@@ -35,7 +36,7 @@ def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=No
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if legend_bottom:
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=ncol, fontsize=8)
     else:
         plt.legend(fontsize=8)
 
@@ -60,18 +61,19 @@ def Make_scatter_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=No
         linewidth=0.7,       # 線の太さ
         alpha=0.7            # 透明度
     )
-
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
+        plt.tight_layout()
         plt.show()
     else:        
-        plt.savefig(path)
+        plt.tight_layout()
+        plt.savefig(path, bbox_inches='tight', pad_inches=0.1)
         plt.show()
 
 
 
 # 折れ線グラフ
-def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
+def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None, y_lim=None, title='', xlabel='', ylabel='', legend_bottom=False, ncol=2, path=None):
     '''
     折れ線グラフを作図し、コンソールに表示 or 指定したパスに保存。
     【引数】
@@ -85,6 +87,7 @@ def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None,
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
     legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
+    ncol[int]:凡例をグラフの下部に表示する場合の1行当たりの凡例件数。指定しない場合は2で設定。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。'''
 
     fig, ax = plt.subplots()
@@ -98,7 +101,7 @@ def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None,
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if legend_bottom:
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=ncol, fontsize=8)
     else:
         plt.legend(fontsize=8)
 
@@ -126,15 +129,22 @@ def Make_line_plot(x_dict, y_dict, x_integer=False, y_integer=False, x_lim=None,
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
+        plt.tight_layout()
         plt.show()
-    else:
-        plt.savefig(path)
+    else:        
+        plt.tight_layout()
+        plt.savefig(path, bbox_inches='tight', pad_inches=0.1)
         plt.show()
+    # if path == None:
+    #     plt.show()
+    # else:
+    #     plt.savefig(path)
+    #     plt.show()
 
 
 
 # 棒グラフ
-def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False, path=None):
+def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False, ncol=2, path=None):
     '''
     棒グラフを作図し、コンソールに表示 or 指定したパスに保存。
     【引数】
@@ -144,6 +154,7 @@ def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False
     xlabel[str]: x軸のラベル。指定しない場合は空白。
     ylabel[str]: y軸のラベル。指定しない場合は空白。
     legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
+    ncol[int]:凡例をグラフの下部に表示する場合の1行当たりの凡例件数。指定しない場合は2で設定。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     '''
 
@@ -176,7 +187,7 @@ def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if legend_bottom:
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=ncol, fontsize=8)
     else:
         plt.legend(fontsize=8)
 
@@ -193,15 +204,17 @@ def Make_bar_plot(x, y_dict, title='', xlabel='', ylabel='', legend_bottom=False
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
+        plt.tight_layout()
         plt.show()
-    else:
-        plt.savefig(path)
+    else:        
+        plt.tight_layout()
+        plt.savefig(path, bbox_inches='tight', pad_inches=0.1)
         plt.show()
 
 
 
 # ヒストグラム
-def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_bottom=False, path=None, bin_width=None, bins=None, alpha=0.4, density=False, normed=False):
+def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_bottom=False, ncol=2, path=None, bin_width=None, bins=None, alpha=0.4, density=False, normed=False):
     '''
     ヒストグラムを作図し、コンソールに表示 or 指定したパスに保存。
     【引数】
@@ -211,6 +224,7 @@ def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_
     y_lim[tuple]: y軸の範囲を指定するタプル。（最小値, 最大値）の形式。指定しない場合は自動で設定。
     x_label[str]: x軸のラベル。指定しない場合は空白。
     legend_bottom[bool]: 凡例をグラフの下部に表示するかどうか。Trueの場合は下部に表示、Falseの場合は通常位置に表示。指定しない場合はFalse。
+    ncol[int]:凡例をグラフの下部に表示する場合の1行当たりの凡例件数。指定しない場合は2で設定。
     path[str]: グラフを保存するパス。指定しない場合はコンソールに表示。
     bin_width[int]: ヒストグラムのビンの幅。指定しない場合は自動でビンの数を設定。
     bins[int or list]: ヒストグラムのビンの数またはビンのエッジを指定するリスト。bin_widthが指定されている場合は無視される。指定しない場合は自動でビンの数を設定。
@@ -251,7 +265,7 @@ def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_
     plt.title(title)
     plt.xlabel(x_label)
     if legend_bottom:
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=2, fontsize=8)
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.11), ncol=ncol, fontsize=8)
     else:
         plt.legend(fontsize=8)
 
@@ -274,8 +288,11 @@ def Make_hist_plot(x_dict, title='', x_lim=None, y_lim=None, x_label='', legend_
 
     # グラフを保存するか表示するかをpathの内容から判断。
     if path == None:
+        plt.tight_layout()
         plt.show()
-    else:
-        plt.savefig(path)
+    else:        
+        plt.tight_layout()
+        plt.savefig(path, bbox_inches='tight', pad_inches=0.1)
         plt.show()
+
 
