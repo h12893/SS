@@ -1,0 +1,14 @@
+# cource/mylibのpyファイルをインポートする際に必要な事前のinstallコマンド一覧
+pip install ipykernel # pyファイルのインストールではなく、ipynbで仮想環境をカーネルに指定するためのインストール
+python -m ipykernel install --user --name .venv_selfstudy_assistance_agent --display-name ".venv_selfstudy_assistance_agent" # カーネルで使用するためにインストールする仮想環境とその表示名を明示的に指定するコマンド
+pip install pandas
+pip install pyodbc
+pip install chardet
+pip install matplotlib
+pip install japanize_matplotlib
+pip install scikit-learn
+# distutilsモジュールはpython3.12以降では廃止されたので、以下のようにsetuptoolsのインストールと最新バージョンへのアップデートで対応
+pip install setuptools
+python -m pip install --upgrade setuptools 
+pip install openpyxl
+
