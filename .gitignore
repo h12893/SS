@@ -26,10 +26,29 @@
 /population_job/python/output/img/*
 # pythonの出力ファイル（データフレームなど）
 /population_job/python/output/csv/*
-# pythonの出力ファイル（CSVなど）
+# pythonの入出力ファイル（inputに分析で利用するために読み込むデータを、outputに一時保存用のデータを格納）
 /population_job/python/data/*
 
 # ========== raw_data ==========
 # 生データ
 /population_job/raw_data/ 
+
+# ==================== selfstudy_assistance_agent関連 ====================
+/selfstudy_assistance_agent/要件定義.md
+
+# ========== python ==========
+# pythonでのSQL Databaseへの接続情報
+/selfstudy_assistance_agent/python/config/connect_DB.config
+# pythonの仮想環境フォルダ
+/selfstudy_assistance_agent/python/.venv
+# pythonのpycache（キャッシュファイル）
+**/__pycache__/
+# pythonの出力ファイル（グラフなど）
+/selfstudy_assistance_agent/python/output/img/*
+# pythonの出力ファイル（データフレームなど）
+/selfstudy_assistance_agent/python/output/csv/*
+# pythonの入出力ファイル（inputに分析で利用するために読み込むデータを、outputに一時保存用のデータを格納）
+/selfstudy_assistance_agent/python/data/*
+
+
 
