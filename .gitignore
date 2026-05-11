@@ -37,6 +37,7 @@
 /selfstudy_assistance_agent/要件定義.md
 
 # ========== python ==========
+/selfstudy_assistance_agent/状況整理/
 # pythonでのSQL Databaseへの接続情報
 /selfstudy_assistance_agent/python/config/connect_DB.config
 # pythonの仮想環境フォルダ

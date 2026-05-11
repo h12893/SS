@@ -4,6 +4,7 @@ from pathlib import Path
 import chardet
 from source.mylib.ConnectDB import Fetch_data
 import openpyxl
+import json
 
 ######################################################################################################################################################
 
@@ -151,6 +152,31 @@ def Write_csv_from_df(df, file_path, encoding="utf-8-sig", index=False):
 
 ######################################################################################################################################################
 
+# 辞書型データをJSONファイルで保存
+def Write_json_from_dict(output_dict, file_path, encoding="utf-8-sig"):
+    '''
+    辞書型データをJSONファイル形式で保存
+    【引数】
+    output_dict[dict]: 書き込むデータを格納した辞書。
+    file_path[str]: 書き込むJSONファイルのパス。
+    encoding[str]: ファイルのエンコーディング。指定しない場合は"utf-8-sig"。
+    '''
+
+    file_path = Path(file_path)
+
+    try:
+        with open(file_path, "w", encoding=encoding) as f:
+            json.dump(output_dict, 
+                      f, 
+                      ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
+                      indent=4 # indent=4 で見やすく整形
+                      )
+        print("JSONファイルに保存しました: file_path")
+    except (OSError, TypeError) as e:
+        print(f"保存中にエラーが発生しました: {e}")
+
+######################################################################################################################################################
+    
 # 指定したデータをdata_dictに追加する関数
 def Add_data_to_dict(data_dict, data_name, data_dir, config_path):
     '''
