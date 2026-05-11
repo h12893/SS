@@ -1,0 +1,44 @@
+# /selfstudy_assistance_agent
+- app/                         # FastAPI アプリケーション本体
+    - main.py                  # FastAPI エントリポイント
+    - api/                     # API ルーター
+        - __init__.py
+        - rag.py               # RAG API（検索→LLM→回答）
+        - health.py            # ヘルスチェック
+        - profile.py           # ユーザプロファイルAPI（任意）
+    - core/                    # 基盤ロジック
+        - config.py            # 設定（環境変数）
+        - embeddings.py        # 埋め込み生成
+        - llm.py               # ローカルLLM呼び出し
+        - search.py            # Chroma検索
+    - models/                  # Pydanticモデル
+        - request.py
+        - response.py
+    - services/                # ビジネスロジック
+        - skill_inventory.py   # スキル棚卸しロジック
+        - certification.py     # 資格推薦ロジック
+    - utils/                   # 共通ユーティリティ
+         - logger.py
+         - file_loader.py
+- data/                        # JSON データ（資格・スキル）
+    - certifications.json
+    - skills.json
+    - sample_user_profiles.json
+- vectorstore/                 # Chroma の永続化データ（ローカル）
+    - chroma.sqlite3
+- models/                      # ローカルLLMのモデル格納
+    - phi-3-mini.gguf
+- docker/                      # Docker 関連ファイル
+    - Dockerfile               # ACA にデプロイする Dockerfile
+    - docker-compose.yml       # ローカル開発用
+    - entrypoint.sh            # 起動スクリプト
+- scripts/                     # 開発用スクリプト
+    - build.sh                 # Docker build
+    - push.sh                  # ACR push
+    - deploy.sh                # ACA デプロイ
+- tests/                       # テストコード
+    - test_rag.py
+    - test_api.py
+- requirements.txt             # Python 依存パッケージ
+- README.md                    # プロジェクト説明
+- .env                         # 環境変数（ローカル用）
