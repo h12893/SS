@@ -35,6 +35,17 @@
 
 # ==================== selfstudy_assistance_agent関連 ====================
 /selfstudy_assistance_agent/要件定義.md
+/selfstudy_assistance_agent/app/__pycache__/
+/selfstudy_assistance_agent/.venv/
+/selfstudy_assistance_agent/data/*
+/selfstudy_assistance_agent/docker/*
+/selfstudy_assistance_agent/models/*
+/selfstudy_assistance_agent/python/*
+/selfstudy_assistance_agent/scripts/*
+/selfstudy_assistance_agent/状況整理/*
+/selfstudy_assistance_agent/tests/*
+/selfstudy_assistance_agent/vectorstore/*
+/selfstudy_assistance_agent/性能チェック.md
 
 # ========== python ==========
 /selfstudy_assistance_agent/状況整理/
