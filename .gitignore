@@ -46,6 +46,7 @@
 /selfstudy_assistance_agent/tests/*
 /selfstudy_assistance_agent/vectorstore/*
 /selfstudy_assistance_agent/性能チェック.md
+/selfstudy_assistance_agent/output/*
 
 # ========== python ==========
 /selfstudy_assistance_agent/状況整理/
