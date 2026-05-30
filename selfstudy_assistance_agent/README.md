@@ -124,7 +124,9 @@ llm = Llama(
 ## uvicornを起動
 
 プロジェクトのルートディレクトリに移動して、ターミナル上で以下のコマンドを実行することでuvicornが起動。  
-`uvicorn app.main:app --reload`
+```
+uvicorn app.main:app --reload
+```
 
 上記実行後にターミナルのログ上で
 ```
@@ -132,6 +134,11 @@ INFO:     Application startup complete.
 ```
 と表示されれば、FastAPIが正常に起動し、リクエスト待ち状態に入っている。  
 この状態になれば、ブラウザやAPIクライアントでアクセスして実行が可能。
+
+コマンドをいかにすれば、バックグラウンドでのサーバ軌道が可能  
+```
+Start-Process powershell -ArgumentList "uvicorn app.main:app --reload"
+```
 
 # 実行方法
 
@@ -179,6 +186,73 @@ Swagger UI の画面で
 - 下部 → FastAPI が自動生成した「エラー時のレスポンス例（422）」
 
 が並んで表示されている場合、Swagger UIが成功例（200）と失敗例（422）を両方表示する仕様通りの結果となっている。
+
+## FastAPI以外での実行
+
+`Swagger UI`は2000〜3000字の日本語長文を貼ると内部で壊れることがある。
+その場合の対策やブラウザを使わない事項方法として、`Swagger UI`ではなく`curl`または`VS Code REST Client`を使う。
+
+### VS Code REST Clientで送る方法
+#### 事前準備
+- 拡張機能をインストール
+  - VS Code 左の拡張機能アイコン → REST Client を検索 → インストール
+- プロジェクト内に test.http というファイルを作成
+
+#### リクエストの書き方
+`test.http`に以下のように記述
+```
+http
+POST http://localhost:8000/rag
+Content-Type: application/json
+
+{
+  "query": "{プロンプト全文}"
+}
+```
+ポイント
+- 上の空行（ヘッダとボディの間の1行）は必須
+- queryはダブルクォート`" "`で囲む
+- 中の文章にダブルクォート`"`がある場合は`\"`にする
+
+#### 実行方法
+- `test.http`を開く
+- POST http://localhost:8000/rag の上に出る`Send Request`をクリック
+- 右側にレスポンスが表示される
+
+### curl で送る方法（ターミナル）
+#### 方法①：ファイル経由（長文に一番安全）
+- プロジェクト直下に`prompt.json`を作成
+
+- `prompt.json`に以下のように記述  
+```
+{
+  "query": "プロンプト全文"
+}
+```
+※ ここでも " " と \" のルールは同じ
+
+- ターミナルでこのコマンドを実行  
+bash
+```
+curl -X POST http://localhost:8000/rag -H "Content-Type: pplication/json" --data-binary "@prompt.json"
+```
+`--data-binary "@ファイル名"`とすることで、ファイルの中身をそのままボディとして送信可能。  
+長文の場合はこの方法が一番壊れにくい。
+
+または
+```
+Invoke-WebRequest -Uri "http://localhost:8000/rag" -Method POST -ContentType "application/json" -InFile "prompt.json"
+```
+これはPowerShellネイティブの方法なので、最も安定する。
+
+#### 方法②：直接書く（短めのテキスト向け）
+bash  
+```
+curl -X POST http://localhost:8000/rag -H "Content-Type: application/json" -d "{\"query\": \"ここにテキスト\"}"
+```
+- ダブルクォートは全部`\"`にエスケープ
+- バックスラッシュは`\\`
+- 長文だと人間が管理しきれないので、本番テストにはあまり向かない
 
 ## 回答内容確認
 
