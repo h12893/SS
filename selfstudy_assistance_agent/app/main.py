@@ -33,6 +33,7 @@ app = FastAPI()
 output_path = f"./output/answer/answer_{len(os.listdir('./output'))}.json"
 output_path = Path(output_path)
 print(f"出力ファイルパス: {output_path}")
+ver_num = ".1.0.1"  # バージョン番号を定数として定義
 
 # -----------------------------
 # 1. Embedding モデル
@@ -45,7 +46,7 @@ embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 chroma_client = PersistentClient(path="./vectorstore")
 
 collection = chroma_client.get_or_create_collection(
-    name="rag_collection_v1.00",
+    name=f"rag_collection_v{ver_num}",
     metadata={"hnsw:space": "cosine"}
 )
 
@@ -290,11 +291,14 @@ def rag_answer(query: str):
     # ⑦ JSON としてパース
     try:
         skill_json = json.loads(json_str)
-    except json.JSONDecodeError:
+        print("パースした skill_json:", skill_json)
+    except json.JSONDecodeError as e:
+        print(f"JSON 解析エラー: {e}")
         # JSON 解析に失敗した場合は空の構造を返す
         skill_json = {"base": [], "value": [], "DS": [], "DE": [], "fusion": []}
 
-    # ⑧ レーダーチャート用の集計
+    # ⑧ レーダーチャートの出力
+    # ⑧-1 レーダーチャート用の集計
     radar = {}
     for category, items in skill_json.items():
         total = 0
@@ -304,7 +308,7 @@ def rag_answer(query: str):
         radar[category] = total
 
     # ⑨ レーダーチャート用に結果をファイルで出力
-    skills_path = f"./output/skills/skills_{len(os.listdir('./output/skills/'))}.json"
+    skills_path = f"./output/skills/skills_v{ver_num}_{len(os.listdir('./output/skills/'))}.json"
     skills_path = Path(skills_path)
     print(f"出力ファイルパス: {skills_path}")
     try:
@@ -318,7 +322,7 @@ def rag_answer(query: str):
     except (OSError, TypeError) as e:
         print(f"skill_json保存中にエラーが発生しました: {e}")
 
-    radar_path = f"./output/radar/radar_{len(os.listdir('./output/radar/'))}.json"
+    radar_path = f"./output/radar/radar_v{ver_num}_{len(os.listdir('./output/radar/'))}.json"
     radar_path = Path(radar_path)
     print(f"出力ファイルパス: {radar_path}")
     try:
@@ -331,7 +335,40 @@ def rag_answer(query: str):
         print("radarデータをJSONファイルに保存しました: radar_path")
     except (OSError, TypeError) as e:
         print(f"radarデータ保存中にエラーが発生しました: {e}")
-    # Write_json_from_dict(answer, output_dict, encoding="utf-8-sig")
+
+
+
+    # ⑧-2 レーダーチャートの出力
+    # カテゴリ
+    categories = ["base", "value", "DS", "DE", "fusion"]
+
+    # 合計値
+    values = []
+    for cat in categories: 
+        values.append(radar[cat])
+
+    # レーダーチャートは最初の値を最後に追加して閉じる
+    values += values[:1]
+
+    # 角度を計算
+    angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
+    angles += angles[:1]
+
+    # 描画
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+
+    ax.plot(angles, values, linewidth=2)
+    ax.fill(angles, values, alpha=0.25)
+
+    # 軸ラベル
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories)
+
+    # タイトル
+    ax.set_title("Skill Radar Chart", fontsize=16)
+
+    # ファイル出力
+    plt.savefig(f"./output/radarchart/radarchart_v{ver_num}_{len(os.listdir('./output/radarchart/'))}.png")
 
     # ⑩ 最終レスポンス
     return {
