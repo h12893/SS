@@ -171,7 +171,7 @@ def Write_json_from_dict(output_dict, file_path, encoding="utf-8-sig"):
                       ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
                       indent=4 # indent=4 で見やすく整形
                       )
-        print("JSONファイルに保存しました: file_path")
+        print(f"JSONファイルに保存しました: {file_path}")
     except (OSError, TypeError) as e:
         print(f"保存中にエラーが発生しました: {e}")
 

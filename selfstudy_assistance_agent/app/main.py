@@ -33,7 +33,7 @@ app = FastAPI()
 output_path = f"./output/answer/answer_{len(os.listdir('./output'))}.json"
 output_path = Path(output_path)
 print(f"出力ファイルパス: {output_path}")
-ver_num = ".1.0.1"  # バージョン番号を定数として定義
+ver_num = ".1.1.0"  # バージョン番号を定数として定義
 
 # -----------------------------
 # 1. Embedding モデル
@@ -59,6 +59,12 @@ def build_skill_documents(skills_data):
     for category, items in skills_data.items():
         for i, skill in enumerate(items):
             name = str(skill.get("No", ""))+"-"+str(skill.get("SubNo", ""))
+            # print(f"処理中のスキル: {name}")
+            # if name[0] != '"':
+            #     name = '"' + name
+            # if name[-1] != '"':
+            #     name = name + '"'
+            # print(f"スキル名: {name}")
             level = skill.get("スキルレベル", "")
             level = level.count("★")  # レベルは★の数で表現されていると仮定
             desc = skill.get("チェック項目", "")
@@ -77,7 +83,7 @@ def build_skill_documents(skills_data):
     return documents, metadatas, ids
 
 # ① JSON 読み込み
-with open("./data/skillcheck_ver6.00.json", "r", encoding="utf-8-sig") as f:
+with open("./data/skillcheck_ver6.00_V.1.1.0.json", "r", encoding="utf-8-sig") as f:
     skills_data = json.load(f)
 
 # ② embedding に強い文書を作る
@@ -121,7 +127,7 @@ def load_json_to_chroma():
         certs = certs_json["qualification"] if isinstance(certs_json, dict) else certs_json
 
     # --- skills.json ---
-    with open("./data/skillcheck_ver6.00.json", "r", encoding="utf-8-sig") as f:
+    with open("./data/skillcheck_ver6.00_V.1.1.0.json", "r", encoding="utf-8-sig") as f:
         skills_json = json.load(f)
 
     # skills.json は {category: [items]} の構造なので flatten する
@@ -197,6 +203,23 @@ def extract_json(text: str) -> str:
 
     return json_str
 
+# 抽出したJSONのスキル名を "No-SubNo" 形式に正規化する関数
+def normalize_skill_json(json_str: str) -> str:
+    """
+    JSON文字列中の skill: 22-22 のような不正な値を
+    "22-22" に強制変換する
+    """
+    import re
+
+    fixed = re.sub(
+        r'"skill"\s*:\s*([0-9]+-[0-9]+)',
+        r'"skill": "\1"',
+        json_str
+    )
+
+    return fixed
+
+
 
 def rag_answer(query: str):
     # ① ユーザ質問をベクトル化
@@ -263,7 +286,7 @@ def rag_answer(query: str):
 制約：
 - JSON 以外の文章は一切出力しない
 - もしコンテキストに該当スキルが見つからない場合でも、ユーザの記述内容から明確に判断できる場合はスキルを含めてよい。
-- レベルは該当スキルの最大レベルを返す
+- 分類がvalueのスキルは、Noが同じスキルが複数該当している場合は、最も高いレベルのスキルを返す。
 - 曖昧な場合は含めない
 - 絵文字は禁止
 - 日本語で返す
@@ -287,6 +310,22 @@ def rag_answer(query: str):
 
     json_str = extract_json(raw_output)
     print("抽出した JSON:", json_str)
+    json_str = normalize_skill_json(json_str)
+    print("形式を補正した JSON:", json_str)
+
+    skills_path = f"./output/extraction/extraction_v{ver_num}_{len(os.listdir('./output/extraction/'))}.json"
+    skills_path = Path(skills_path)
+    print(f"出力ファイルパス: {skills_path}")
+    try:
+        with open(skills_path, "w", encoding="utf-8-sig") as f:
+            json.dump(json_str, 
+                      f, 
+                      ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
+                      indent=4 # indent=4 で見やすく整形
+                      )
+        print(f"json_strをJSONファイルに保存しました: {skills_path}")
+    except (OSError, TypeError) as e:
+        print(f"json_str保存中にエラーが発生しました: {e}")
 
     # ⑦ JSON としてパース
     try:
@@ -318,7 +357,7 @@ def rag_answer(query: str):
                       ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
                       indent=4 # indent=4 で見やすく整形
                       )
-        print("skill_jsonをJSONファイルに保存しました: skills_path")
+        print(f"skill_jsonをJSONファイルに保存しました: {skills_path}")
     except (OSError, TypeError) as e:
         print(f"skill_json保存中にエラーが発生しました: {e}")
 
@@ -332,7 +371,7 @@ def rag_answer(query: str):
                       ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
                       indent=4 # indent=4 で見やすく整形
                       )
-        print("radarデータをJSONファイルに保存しました: radar_path")
+        print(f"radarデータをJSONファイルに保存しました: {radar_path}")
     except (OSError, TypeError) as e:
         print(f"radarデータ保存中にエラーが発生しました: {e}")
 
