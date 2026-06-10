@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 
-# # -----------------------------
+# # -----------------------------deactiva
 # # 0. 自作関数のインポート
 # # -----------------------------
 # def reload_or_import(module_name):
@@ -30,10 +30,17 @@ from pathlib import Path
 #     print(f"✗ エラー: {e}")
 
 app = FastAPI()
-output_path = f"./output/answer/answer_{len(os.listdir('./output'))}.json"
+ver_num = ".1.1.1"  # バージョン番号を定数として定義
+# outputフォルダは以下にバージョン番号名のフォルダが無ければ作成する
+folder_ver_num = ver_num[1:]  # バージョン番号から先頭のドットを除いた部分をフォルダ名に使用
+if not os.path.exists(f"./output/{folder_ver_num}"):
+    os.makedirs(f"./output/{folder_ver_num}/skills", exist_ok=True)
+    os.makedirs(f"./output/{folder_ver_num}/radar", exist_ok=True)
+    os.makedirs(f"./output/{folder_ver_num}/radarchart", exist_ok=True)
+    os.makedirs(f"./output/{folder_ver_num}/answer", exist_ok=True)
+output_path = f"./output/{folder_ver_num}/answer/answer_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/answer'))}.txt"
 output_path = Path(output_path)
 print(f"出力ファイルパス: {output_path}")
-ver_num = ".1.1.0"  # バージョン番号を定数として定義
 
 # -----------------------------
 # 1. Embedding モデル
@@ -313,20 +320,6 @@ def rag_answer(query: str):
     json_str = normalize_skill_json(json_str)
     print("形式を補正した JSON:", json_str)
 
-    skills_path = f"./output/extraction/extraction_v{ver_num}_{len(os.listdir('./output/extraction/'))}.json"
-    skills_path = Path(skills_path)
-    print(f"出力ファイルパス: {skills_path}")
-    try:
-        with open(skills_path, "w", encoding="utf-8-sig") as f:
-            json.dump(json_str, 
-                      f, 
-                      ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
-                      indent=4 # indent=4 で見やすく整形
-                      )
-        print(f"json_strをJSONファイルに保存しました: {skills_path}")
-    except (OSError, TypeError) as e:
-        print(f"json_str保存中にエラーが発生しました: {e}")
-
     # ⑦ JSON としてパース
     try:
         skill_json = json.loads(json_str)
@@ -347,7 +340,7 @@ def rag_answer(query: str):
         radar[category] = total
 
     # ⑨ レーダーチャート用に結果をファイルで出力
-    skills_path = f"./output/skills/skills_v{ver_num}_{len(os.listdir('./output/skills/'))}.json"
+    skills_path = f"./output/{folder_ver_num}/skills/skills_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/skills/'))}.json"
     skills_path = Path(skills_path)
     print(f"出力ファイルパス: {skills_path}")
     try:
@@ -361,7 +354,7 @@ def rag_answer(query: str):
     except (OSError, TypeError) as e:
         print(f"skill_json保存中にエラーが発生しました: {e}")
 
-    radar_path = f"./output/radar/radar_v{ver_num}_{len(os.listdir('./output/radar/'))}.json"
+    radar_path = f"./output/{folder_ver_num}/radar/radar_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/radar/'))}.json"
     radar_path = Path(radar_path)
     print(f"出力ファイルパス: {radar_path}")
     try:
@@ -374,8 +367,6 @@ def rag_answer(query: str):
         print(f"radarデータをJSONファイルに保存しました: {radar_path}")
     except (OSError, TypeError) as e:
         print(f"radarデータ保存中にエラーが発生しました: {e}")
-
-
 
     # ⑧-2 レーダーチャートの出力
     # カテゴリ
@@ -407,7 +398,24 @@ def rag_answer(query: str):
     ax.set_title("Skill Radar Chart", fontsize=16)
 
     # ファイル出力
-    plt.savefig(f"./output/radarchart/radarchart_v{ver_num}_{len(os.listdir('./output/radarchart/'))}.png")
+    plt.savefig(f"./output/{folder_ver_num}/radarchart/radarchart_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/radarchart/'))}.png")
+
+    skill_txt = json.dumps(skill_json, ensure_ascii="utf-8-sig", indent=4)
+    radar_txt = json.dumps(radar, ensure_ascii="utf-8-sig", indent=4)
+    answer_txt = "=== スキルチェック結果 ===" + \
+        skill_txt + \
+        "\n\n" + \
+        "=== レーダーチャート結果 ===" + \
+         radar_txt + \
+         "\n\n" + \
+        "=== コンテキスト ===" + \
+         context
+    try:
+        with open(output_path, "w", encoding="utf-8-sig") as f:
+            f.write(answer_txt)
+        print(f"回答データをtxtファイルに保存しました: {output_path}")
+    except (OSError, TypeError) as e:
+        print(f"radarデータ保存中にエラーが発生しました: {e}")
 
     # ⑩ 最終レスポンス
     return {
