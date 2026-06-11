@@ -30,7 +30,7 @@ from pathlib import Path
 #     print(f"✗ エラー: {e}")
 
 app = FastAPI()
-ver_num = ".1.1.1"  # バージョン番号を定数として定義
+ver_num = ".1.2.0"  # バージョン番号を定数として定義
 # outputフォルダは以下にバージョン番号名のフォルダが無ければ作成する
 folder_ver_num = ver_num[1:]  # バージョン番号から先頭のドットを除いた部分をフォルダ名に使用
 if not os.path.exists(f"./output/{folder_ver_num}"):
@@ -62,8 +62,10 @@ def build_skill_documents(skills_data):
     documents = []
     metadatas = []
     ids = []
+    total_skill_level = {}
 
     for category, items in skills_data.items():
+        skill_level_sum = 0
         for i, skill in enumerate(items):
             name = str(skill.get("No", ""))+"-"+str(skill.get("SubNo", ""))
             # print(f"処理中のスキル: {name}")
@@ -76,6 +78,8 @@ def build_skill_documents(skills_data):
             level = level.count("★")  # レベルは★の数で表現されていると仮定
             desc = skill.get("チェック項目", "")
 
+            skill_level_sum += level
+
             # ★ embedding 用に強いテキストを組み立てる
             doc = f"[カテゴリ: {category}] スキル名: {name}（レベル{level}） 説明: {desc}"
 
@@ -87,14 +91,16 @@ def build_skill_documents(skills_data):
             })
             ids.append(f"{category}_{i}")
 
-    return documents, metadatas, ids
+        total_skill_level[category] = skill_level_sum
+
+    return documents, metadatas, ids, total_skill_level
 
 # ① JSON 読み込み
 with open("./data/skillcheck_ver6.00_V.1.1.0.json", "r", encoding="utf-8-sig") as f:
     skills_data = json.load(f)
 
 # ② embedding に強い文書を作る
-documents, metadatas, ids = build_skill_documents(skills_data)
+documents, metadatas, ids, total_skill_level = build_skill_documents(skills_data)
 
 # ③ embedding を計算
 embeddings = embedder.encode(documents).tolist()
@@ -225,8 +231,6 @@ def normalize_skill_json(json_str: str) -> str:
     )
 
     return fixed
-
-
 
 def rag_answer(query: str):
     # ① ユーザ質問をベクトル化
@@ -375,7 +379,8 @@ def rag_answer(query: str):
     # 合計値
     values = []
     for cat in categories: 
-        values.append(radar[cat])
+        # カテゴリごとの合計値を全スキルレベルの合計で割って正規化。total_skill_levelが0の場合は1で割る（実際にはそのカテゴリのスキルがないので0になるはず）
+        values.append(round(radar[cat] / total_skill_level.get(cat, 1), 2))  
 
     # レーダーチャートは最初の値を最後に追加して閉じる
     values += values[:1]
