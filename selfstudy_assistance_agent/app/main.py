@@ -1,16 +1,18 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 import chromadb
 from chromadb.config import Settings
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
-from llama_cpp import Llama
+# from llama_cpp import Llama
 import json
 import os
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 import time
+import asyncio
+import httpx
 
 # # -----------------------------deactiva
 # # 0. 自作関数のインポート
@@ -31,7 +33,7 @@ import time
 #     print(f"✗ エラー: {e}")
 
 app = FastAPI()
-ver_num = ".1.3.0"  # バージョン番号を定数として定義
+ver_num = ".2.0.0"  # バージョン番号を定数として定義
 # outputフォルダは以下にバージョン番号名のフォルダが無ければ作成する
 folder_ver_num = ver_num[1:]  # バージョン番号から先頭のドットを除いた部分をフォルダ名に使用
 if not os.path.exists(f"./output/{folder_ver_num}"):
@@ -70,12 +72,6 @@ def build_skill_documents(skills_data):
         skill_level_sum = 0
         for i, skill in enumerate(items):
             name = str(skill.get("No", ""))+"-"+str(skill.get("SubNo", ""))
-            # print(f"処理中のスキル: {name}")
-            # if name[0] != '"':
-            #     name = '"' + name
-            # if name[-1] != '"':
-            #     name = name + '"'
-            # print(f"スキル名: {name}")
             level = skill.get("スキルレベル", "")
             level = level.count("★")  # レベルは★の数で表現されていると仮定
             desc = skill.get("チェック項目", "")
@@ -113,19 +109,6 @@ collection.add(
     embeddings=embeddings,
     metadatas=metadatas,
     ids=ids
-)
-
-# -----------------------------
-# 3. ローカル LLM（Llama）
-# -----------------------------
-llm = Llama(
-    # model_path="./models/phi-3-mini.gguf",
-    model_path="./models/Llama-3-8B-Instruct-Q4_K_M.gguf",
-    # コンテキストウィンドウサイズ（モデルが一度に読み込める文章量）。
-    # 入力と出力の合計で単位はトークン（日本語なら1トークンはほぼ1文字）
-    #  Llama‑3 8B なら32768（32K）まで対応しているが、環境によってはメモリ不足になる可能性があるため、16384（16K）に設定。
-    n_ctx=16384, 
-    n_threads=12 # CPUのスレッド数。使用環境のコア数に合わせて調整（CPUの物理コア数×2 以上は効果がないことが多い）
 )
 
 # -----------------------------
@@ -270,26 +253,26 @@ def normalize_llm_output(obj):
     # その他は空
     return []
 
-# カテゴリ別のLLM実行関数
-def run_llm_for_category(category, docs, query):
+# カテゴリ別のLLM実行関数（ollamaによる非同期版）
+async def run_llm_for_category(category, docs, query):
     context = "\n\n".join(docs)
 
     prompt = f"""
 あなたはスキルカテゴリ「{category}」のアセッサーです。
-以下のスキル定義（コンテキスト）とユーザの記述から、ユーザが満たしているスキルのみを JSON 形式で返してください。
+以下のスキル定義（コンテキスト）とユーザ記述から、
+該当スキルのみを JSON 形式で返してください。
 
 出力形式（厳守）：
 [
-  {{"skill": "スキル名", "level": 数値}},
-  ...
+  {{"skill": "スキル名", "level": 数値}}
 ]
 
 制約：
 - JSON 以外の文章は出力しない
 - "..." を使わない
-- assistant などの余計な語を出力しない
 - スキル名は必ずダブルクォートで囲む
-- 日本語で返す
+- スキル名（skill）は必ず "数字-数字" の形式とする（スキルの説明文の一部などを使用してはいけない）。
+- スキルレベル（level）は★の数を数値に変換して返し、"初級"、"中級"、"上級" などの文字表現は使わない
 
 # コンテキスト
 {context}
@@ -300,18 +283,47 @@ def run_llm_for_category(category, docs, query):
 # JSON 出力
 """
 
-    response = llm(prompt, max_tokens=1024*10)
-    raw = response["choices"][0]["text"]
+    url = "http://localhost:11434/api/generate"
+    # 逐次読み取り用バッファ
+    full_text = ""
 
-    # JSON 抽出（あなたが実装済みの extract_json を使う）
-    json_str = extract_json(raw)
+    async with httpx.AsyncClient(timeout=None) as client:
+        async with client.stream(
+            "POST",
+            url,
+            json={
+                "model": "my-llama3", # 通常版
+                # "model": "my-llama3-3b", # 軽量版
+                "prompt": prompt,
+                "stream": True
+            }
+        ) as response:
+
+            async for line in response.aiter_lines():
+                if not line:
+                    continue
+
+                try:
+                    data = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+
+                # 逐次生成されたテキストを蓄積
+                if "response" in data:
+                    full_text += data["response"]
+
+                # 完了フラグ
+                if data.get("done"):
+                    break
+
+    # JSON 抽出（あなたの既存関数を利用）
+    json_str = extract_json(full_text)
     json_str = normalize_skill_json(json_str)
 
     try:
         parsed = json.loads(json_str)
         return normalize_llm_output(parsed)
-    except json.JSONDecodeError as e:
-        debug_json_error(json_str, e)
+    except Exception:
         return []
 
 # JSONDecodeError の詳細を表示する関数
@@ -339,44 +351,43 @@ def debug_json_error(json_str: str, error: json.JSONDecodeError):
     print(error_line)
     print(pointer)
 
-def rag_answer(query: str):
-    # 処理時間の計測用
-    start_time = time.time()
-    
-    # ① ユーザ質問をベクトル化
-    embedding = embedder.encode(query).tolist()
+def normalize_level(value):
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        # 日本語 → 数値
+        if value == "初級": return 1
+        if value == "中級": return 2
+        if value == "上級": return 3
 
-    # ②-1 ChromaDB で類似ドキュメント検索
+        # ★ → 数値
+        if set(value) == {"★"}:
+            return len(value)
+
+        # 数値文字列
+        if value.isdigit():
+            return int(value)
+
+    # それ以外は 0 とみなす
+    return 0
+
+@app.post("/rag")
+async def rag_answer(request: Request):
+    start_time = time.time()
+    body = await request.json()
+    query = body["query"]
+
+    # embedding → 類似検索（あなたの既存コード）
+    # embedding = embedder.embed(query)
+    embedding = embedder.encode(query).tolist()
     results = collection.query(
-    query_embeddings=[embedding],
-    n_results=15,
-    # n_results=50,
-    include=["documents", "metadatas", "distances"]
+        query_embeddings=[embedding],
+        n_results=50,
+        include=["documents", "metadatas", "distances"]
     )
 
-    # docs = []
-    # distances = results.get("distances", [[]])[0] or []
-    # documents = results.get("documents", [[]])[0] or []
-
-    # # ③-2 検索結果をスコア値でフィルタリング
-    # min_score = 100
-    # for doc, score in zip(documents, distances):
-    #     if score < min_score:
-    #         min_score = score
-    #     if score < 0.8:  # cosine距離なので小さいほど近い
-    #         docs.append(doc)
-    # print(f"最小スコア: {min_score}, フィルタ後ドキュメント数: {len(docs)}")
-
-    # for doc in docs:
-    #     print(f"ドキュメント: {doc[:100]}...")  # ドキュメントの先頭100文字を表示
-
-    docs_by_category = {
-    "base": [],
-    "value": [],
-    "DS": [],
-    "DE": [],
-    "fusion": []
-    }
+    # カテゴリごとに分類
+    docs_by_category = {"base": [], "value": [], "DS": [], "DE": [], "fusion": []}
 
     for doc, meta, dist in zip(
         results["documents"][0],
@@ -384,121 +395,33 @@ def rag_answer(query: str):
         results["distances"][0]
     ):
         if dist < 0.8:
-            cat = meta["category"]
-            docs_by_category[cat].append(doc)
+            docs_by_category[meta["category"]].append(doc)
 
-#     # fallback
-#     if not docs:
-#         docs = documents
+    # 並列で LLM を呼ぶ
+    categories = ["base", "value", "DS", "DE", "fusion"]
 
-#     # ③ 検索結果をコンテキストとしてまとめる
-#     context = "\n\n".join(docs)
-#     print(f"コンテキストの長さ（文字数）: {len(context)}")
-#     print(f"コンテキスト: {context}")
+    LLM_results = await asyncio.gather(
+        run_llm_for_category("base", docs_by_category["base"], query),
+        run_llm_for_category("value", docs_by_category["value"], query),
+        run_llm_for_category("DS", docs_by_category["DS"], query),
+        run_llm_for_category("DE", docs_by_category["DE"], query),
+        run_llm_for_category("fusion", docs_by_category["fusion"], query)
+    )
 
-#     # コンテキストが空の場合のフォールバック
-#     if len(context) == 0:
-#         context = "（スキルデータが見つかりませんでした）"
+    skill_json = {}
 
-#     # ④ LLM に構造化 JSON を返させるプロンプト
-#     prompt = f"""
-# あなたはデータサイエンス協会のスキルチェックリストに基づいて、
-# ユーザが満たしているスキルを判定するアセッサーです。
-
-# 以下のコンテキストには、スキル項目（base/value/DS/DE/fusion）が含まれています。
-# ユーザの質問内容から、ユーザが「満たしている」と判断できるスキルを抽出し、
-# 必ず次の JSON 形式で返してください。
-
-# 出力形式（厳守）：
-
-# {{
-#   "base": [
-#     {{"skill": "スキル名", "level": 数値}},
-#     ...
-#   ],
-#   "value": [...],
-#   "DS": [...],
-#   "DE": [...],
-#   "fusion": [...]
-# }}
-
-# 制約：
-# - JSON 以外の文章は一切出力しない
-# - もしコンテキストに該当スキルが見つからない場合でも、ユーザの記述内容から明確に判断できる場合はスキルを含めてよい。
-# - 分類がvalueのスキルは、Noが同じスキルが複数該当している場合は、最も高いレベルのスキルを返す。
-# - 曖昧な場合は含めない
-# - 絵文字は禁止
-# - 日本語で返す
-# - 不要な記号（\\n や *** など）は使わない
-
-# # コンテキスト
-# {context}
-
-# # ユーザ質問
-# {query}
-
-# # JSON 出力
-# """
-
-    # # ⑤ LLM 実行
-    # response = llm(prompt, max_tokens=1024*16)  # 出力トークン数の上限。必要に応じて調整
-    # print(f"LLM 生の出力: {response}")
-
-    # # ⑥ LLM の出力（JSON文字列）を抽出
-    # raw_output = response["choices"][0]["text"]
-
-    # json_str = extract_json(raw_output)
-    # print("抽出した JSON:", json_str)
-    # json_str = normalize_skill_json(json_str)
-    # print("形式を補正した JSON:", json_str)
-
-    # # ⑨ レーダーチャート用に結果をファイルで出力
-    # skills_path = f"./output/{folder_ver_num}/before/before_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/before/'))}.json"
-    # skills_path = Path(skills_path)
-    # print(f"出力ファイルパス: {skills_path}")
-    # try:
-    #     with open(skills_path, "w", encoding="utf-8-sig") as f:
-    #         json.dump(json_str, 
-    #                   f, 
-    #                   ensure_ascii=False, # ensure_ascii=False で日本語をそのまま出力
-    #                   indent=4 # indent=4 で見やすく整形
-    #                   )
-    #     print(f"json_strをJSONファイルに保存しました: {skills_path}")
-    # except (OSError, TypeError) as e:
-    #     print(f"json_str保存中にエラーが発生しました: {e}")
-
-    # # ⑦ JSON としてパース
-    # try:
-    #     skill_json = json.loads(json_str)
-    #     print("パースした skill_json:", skill_json)
-    # except json.JSONDecodeError as e:
-    #     debug_json_error(json_str, e)
-    #     # JSON 解析に失敗した場合は空の構造を返す
-    #     skill_json = {"base": [], "value": [], "DS": [], "DE": [], "fusion": []}
-
-    skill_json = {
-        "base": run_llm_for_category("base", docs_by_category["base"], query),
-        "value": run_llm_for_category("value", docs_by_category["value"], query),
-        "DS": run_llm_for_category("DS", docs_by_category["DS"], query),
-        "DE": run_llm_for_category("DE", docs_by_category["DE"], query),
-        "fusion": run_llm_for_category("fusion", docs_by_category["fusion"], query),
-    }
-
-    # ⑧ レーダーチャートの出力
-    # ⑧-1 レーダーチャート用の集計
-    # radar = {}
-    # for category, items in skill_json.items():
-    #     total = 0
-    #     for item in items:
-    #         level = item.get("level", 0)
-    #         total += int(level)
-    #     radar[category] = total
+    for cat, res in zip(categories, LLM_results):
+        if isinstance(res, list):
+            skill_json[cat] = res
+        else:
+            skill_json[cat] = []  # 壊れていたら空にする
 
     # ⑧ レーダーチャートの出力
     # ⑧-1 レーダーチャート用の集計
     radar = {}
     for category, items in skill_json.items():
-        radar[category] = sum(int(item["level"]) for item in items)
+        # radar[category] = sum(int(item["level"]) for item in items)
+        radar[category] = sum(normalize_level(item["level"]) for item in items)
 
     # ⑨ レーダーチャート用に結果をファイルで出力
     skills_path = f"./output/{folder_ver_num}/skills/skills_v{ver_num}_{len(os.listdir(f'./output/{folder_ver_num}/skills/'))}.json"
@@ -530,8 +453,6 @@ def rag_answer(query: str):
         print(f"radarデータ保存中にエラーが発生しました: {e}")
 
     # ⑧-2 レーダーチャートの出力
-    # カテゴリ
-    categories = ["base", "value", "DS", "DE", "fusion"]
 
     # 合計値
     values = []
@@ -590,12 +511,13 @@ def rag_answer(query: str):
         "radar_chart": radar
     }
 
+
 # -----------------------------
 # 7. FastAPI エンドポイント
 # -----------------------------
 @app.post("/rag")
-def rag_endpoint(q: Query):
-    answer = rag_answer(q.query)
+async def rag_endpoint(q: Query):
+    answer = await rag_answer(q.query)
     return {"answer": answer}
 
 
