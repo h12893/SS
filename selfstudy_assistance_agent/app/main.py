@@ -33,7 +33,7 @@ import httpx
 #     print(f"✗ エラー: {e}")
 
 app = FastAPI()
-ver_num = ".2.0.0"  # バージョン番号を定数として定義
+ver_num = ".2.0.1"  # バージョン番号を定数として定義
 # outputフォルダは以下にバージョン番号名のフォルダが無ければ作成する
 folder_ver_num = ver_num[1:]  # バージョン番号から先頭のドットを除いた部分をフォルダ名に使用
 if not os.path.exists(f"./output/{folder_ver_num}"):
@@ -469,6 +469,14 @@ async def rag_answer(request: Request):
 
     # 描画
     fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+
+    # 半径方向の最小値・最大値設定
+    ax.set_ylim(0, 1)  # ここで最小値0、最大値1に設定
+
+    # 角度の開始位置を調整（例: 上方向をスタートにする）
+    ax.set_theta_offset(np.pi / 2)  # π/2 で上方向
+    # 時計回りにする場合は -1、反時計回りは 1
+    ax.set_theta_direction(-1)
 
     ax.plot(angles, values, linewidth=2)
     ax.fill(angles, values, alpha=0.25)
